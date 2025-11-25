@@ -606,9 +606,9 @@ function HomePage() {
           </div>
         </div>
        
-        <div className="row g-3 mt-3">
+        <div className="location-highlights-row mt-3">
           {locationHighlights.map((stat) => (
-            <div key={stat.label} className="col-12 col-xxl">
+            <div key={stat.label} className="location-highlights-item">
               <WheelStatCard {...stat} />
             </div>
           ))}
