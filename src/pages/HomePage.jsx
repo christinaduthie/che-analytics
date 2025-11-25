@@ -1117,7 +1117,7 @@ function buildLocationScopeStats(countries = [], selection = {}, meta = {}) {
     ? statesTotalList.length
     : globalTotals.states ?? Math.max(statesTotalList.length, statesCurrentList.length);
 
-  const statesForDistricts = statesBaseCountries;
+  const statesForDistricts = statesTotalList;
   const districtsTotalList = districtsFromStates(statesForDistricts);
   let districtsCurrentList;
   if (selection.state && selectedCountry) {
