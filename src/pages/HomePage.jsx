@@ -1104,6 +1104,8 @@ function buildLocationScopeStats(countries = [], selection = {}, meta = {}) {
     stateList.flatMap((state) => state.districts ?? []);
   const subDistrictsFromDistricts = (districtList) =>
     districtList.flatMap((district) => district.subDistricts ?? []);
+  const villagesFromSubDistricts = (subDistrictList) =>
+    subDistrictList.flatMap((subDistrict) => subDistrict.villages ?? []);
 
   const statesBaseCountries = selectedCountry ? [selectedCountry] : countriesInContinent;
   const statesTotalList = statesFromCountries(statesBaseCountries);
@@ -1166,6 +1168,60 @@ function buildLocationScopeStats(countries = [], selection = {}, meta = {}) {
     ? subDistrictsTotalList.length
     : globalTotals.subDistricts ?? Math.max(subDistrictsTotalList.length, subDistrictsCurrentList.length);
 
+  const villagesTotalList = villagesFromSubDistricts(subDistrictsTotalList);
+  let villagesCurrentList;
+  if (selection.village && selectedCountry) {
+    const stateMatch = selectedCountry.states?.find(
+      (state) => state.stateName === selection.state
+    );
+    const districtMatch = stateMatch?.districts?.find(
+      (district) => district.districtName === selection.district
+    );
+    const subDistrictMatch = districtMatch?.subDistricts?.find(
+      (subDistrict) => subDistrict.subDistrictName === selection.subDistrict
+    );
+    const matchingVillages = subDistrictMatch?.villages ?? [];
+    villagesCurrentList = matchingVillages.filter(
+      (village) =>
+        (village.cheVillageInformation?.cheVillageName ?? "") === selection.village
+    );
+  } else if (selection.subDistrict && selectedCountry) {
+    const stateMatch = selectedCountry.states?.find(
+      (state) => state.stateName === selection.state
+    );
+    const districtMatch = stateMatch?.districts?.find(
+      (district) => district.districtName === selection.district
+    );
+    const subDistrictMatch = districtMatch?.subDistricts?.find(
+      (subDistrict) => subDistrict.subDistrictName === selection.subDistrict
+    );
+    villagesCurrentList = subDistrictMatch?.villages ?? [];
+  } else if (selection.district && selectedCountry) {
+    const stateMatch = selectedCountry.states?.find(
+      (state) => state.stateName === selection.state
+    );
+    const districtMatch = stateMatch?.districts?.find(
+      (district) => district.districtName === selection.district
+    );
+    villagesCurrentList = villagesFromSubDistricts(
+      districtMatch?.subDistricts ?? []
+    );
+  } else if (selection.state && selectedCountry) {
+    const stateMatch = selectedCountry.states?.find(
+      (state) => state.stateName === selection.state
+    );
+    villagesCurrentList = villagesFromSubDistricts(
+      subDistrictsFromDistricts(
+        districtsFromStates(stateMatch ? [stateMatch] : [])
+      )
+    );
+  } else {
+    villagesCurrentList = villagesTotalList;
+  }
+  const villagesTotalCount = selectedCountry || selection.continent
+    ? villagesTotalList.length
+    : globalTotals.villages ?? Math.max(villagesTotalList.length, villagesCurrentList.length);
+
   const continentsCurrentCount = selection.continent ? 1 : continentsSet.size;
   const continentsTotalCount = selection.continent
     ? 1
@@ -1192,6 +1248,10 @@ function buildLocationScopeStats(countries = [], selection = {}, meta = {}) {
       current: subDistrictsCurrentList.length,
       total: subDistrictsTotalCount || subDistrictsCurrentList.length || 1,
     },
+    villages: {
+      current: villagesCurrentList.length,
+      total: villagesTotalCount || villagesCurrentList.length || 1,
+    },
   };
 }
 
@@ -1210,24 +1270,29 @@ function buildSelectionTrail(selection = {}) {
 }
 
 function buildGeographyHighlights(stats = {}, selection = {}) {
-  const palette = ["#4f46e5", "#0ea5e9", "#22c55e", "#f97316", "#c026d3"];
+  const palette = ["#4f46e5", "#0ea5e9", "#22c55e", "#f97316", "#c026d3", "#facc15"];
   const config = [
     { key: "continents", label: "Continents engaged", unit: "continents" },
     { key: "countries", label: "Countries active", unit: "countries" },
     { key: "states", label: "States", unit: "states" },
     { key: "districts", label: "Districts ", unit: "districts" },
     { key: "subDistricts", label: "Sub districts ", unit: "sub districts" },
+    { key: "villages", label: "Villages", unit: "villages" },
   ];
-  const { continent, country, state, district } = selection;
-  let keysToDisplay = config.map((entry) => entry.key);
-  if (district) {
-    keysToDisplay = ["subDistricts"];
+  const { continent, country, state, district, subDistrict, village } = selection;
+  let keysToDisplay = ["continents", "countries", "states", "districts", "subDistricts", "villages"];
+  if (village) {
+    keysToDisplay = ["villages"];
+  } else if (subDistrict) {
+    keysToDisplay = ["subDistricts", "villages"];
+  } else if (district) {
+    keysToDisplay = ["subDistricts", "villages"];
   } else if (state) {
-    keysToDisplay = ["districts", "subDistricts"];
+    keysToDisplay = ["districts", "subDistricts", "villages"];
   } else if (country) {
-    keysToDisplay = ["states", "districts", "subDistricts"];
+    keysToDisplay = ["states", "districts", "subDistricts", "villages"];
   } else if (continent) {
-    keysToDisplay = ["countries", "states", "districts", "subDistricts"];
+    keysToDisplay = ["countries", "states", "districts", "subDistricts", "villages"];
   }
   return config.filter((entry) => keysToDisplay.includes(entry.key)).map((entry, index) => {
     const bucket = stats[entry.key] ?? {};
@@ -1243,7 +1308,7 @@ function buildGeographyHighlights(stats = {}, selection = {}) {
 }
 
 function describeScopeCaption(level, selection = {}) {
-  const { continent, country, state, district, subDistrict } = selection;
+  const { continent, country, state, district, subDistrict, village } = selection;
   switch (level) {
     case "continents":
       return continent ? `Focus: ${continent}` : "";
@@ -1267,6 +1332,14 @@ function describeScopeCaption(level, selection = {}) {
       if (district) return `Within ${district}`;
       if (state) return `Across ${state}`;
       if (country) return `Sub districts in ${country}`;
+      if (continent) return `Across ${continent}`;
+      return "";
+    case "villages":
+      if (village) return `Focus: ${village}`;
+      if (subDistrict) return `Within ${subDistrict}`;
+      if (district) return `Across ${district}`;
+      if (state) return `Villages in ${state}`;
+      if (country) return `Villages in ${country}`;
       if (continent) return `Across ${continent}`;
       return "";
     default:
