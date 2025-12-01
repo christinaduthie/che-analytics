@@ -31,7 +31,13 @@ export const cheData = {
                           "peopleGroups": ["OBC", "SC", "ST"],
                           "povertyIndex": 0.62,
                           "cheWorkerName": "Anita Rao",
-                          "cheWorkerOrganization": "Hope Community Health Initiative"
+                          "cheWorkerOrganization": "Hope Community Health Initiative",
+                          "unreachedPeopleGroupsAdopted": ["UPG-1", "UPG-2"],
+                          "cheWorkerCount": 5,
+                          "cheWorkerPartnerOrganizations": ["Regional Health Collective", "Community Impact Trust"],
+                          "cheTrainedWorkers": 20,
+                          "mvcAdoptedWorkers": 2,
+                          "masterTrainers": 3
                         },
                         "churches": [
                           {
@@ -40,6 +46,7 @@ export const cheData = {
                             "establishmentDate": "2010-05-12",
                             "updateDate": "2025-01-15",
                             "newCommitments": 18,
+                            "membersCount": 120,
                             "leftFaith": 2,
                             "fileUpload": "https://example.org/uploads/churches/sunrise-fellowship-2025-report.pdf",
                             "remarks": "Steady growth with new youth outreach program."
@@ -50,9 +57,21 @@ export const cheData = {
                             "establishmentDate": "2016-09-20",
                             "updateDate": "2025-01-10",
                             "newCommitments": 9,
+                            "membersCount": 135,
                             "leftFaith": 1,
                             "fileUpload": "https://example.org/uploads/churches/grace-community-2025-summary.pdf",
                             "remarks": "Small but consistent home group engagement."
+                          },
+                          {
+                            "churchName": "Hope Harvest Collective",
+                            "place": "West Ridge",
+                            "establishmentDate": "2023-02-11",
+                            "updateDate": "2025-11-08",
+                            "newCommitments": 14,
+                            "membersCount": 165,
+                            "leftFaith": 0,
+                            "fileUpload": "https://example.org/uploads/churches/hope-harvest-2025-nov-report.pdf",
+                            "remarks": "Expanded evening mentoring circles and November outreach fairs."
                           }
                         ],
                         "growthStatistics": [
@@ -247,6 +266,14 @@ export const cheData = {
                             "peopleTrained": 20,
                             "fileUpload": "https://example.org/uploads/trainings/sunrise-tot-1020-summary.xlsx",
                             "description": "Long-term sustainability and exit strategy."
+                          },
+                          {
+                            "trainingCategory": "TOT-201",
+                            "place": "Sunrise Innovation Lab",
+                            "updatedDate": "2025-11-04",
+                            "peopleTrained": 26,
+                            "fileUpload": "https://example.org/uploads/trainings/sunrise-tot-201-brief.pdf",
+                            "description": "Advanced CHE worker mentoring and November response planning."
                           }
                         ],
                         "projects": [
@@ -313,6 +340,14 @@ export const cheData = {
                             "peopleTrained": 27,
                             "fileUpload": "https://example.org/uploads/projects/sunrise-water-project-status.xlsx",
                             "description": "Clean water access and maintenance training."
+                          },
+                          {
+                            "projectCategory": "Emergency Relief",
+                            "place": "Multi-hamlet Food Gardens",
+                            "updatedDate": "2025-11-15",
+                            "peopleTrained": 52,
+                            "fileUpload": "https://example.org/uploads/projects/sunrise-emergency-relief-nov2025.pdf",
+                            "description": "Monsoon recovery kits, rapid gardens, and pop-up clinics."
                           }
                         ],
                         "transformationStories": [
@@ -347,6 +382,14 @@ export const cheData = {
                             "peopleImpacted": 250,
                             "fileUpload": "https://example.org/uploads/stories/sunrise-village-story.pdf",
                             "description": "Shift from open defecation to nearly full toilet usage in two years."
+                          },
+                          {
+                            "storiesCategory": "Movement",
+                            "place": "West Ridge",
+                            "updatedDate": "2025-11-21",
+                            "peopleImpacted": 68,
+                            "fileUpload": "https://example.org/uploads/stories/sunrise-movement-nov2025.pdf",
+                            "description": "November neighborhood care fair connected clinics, DBS launches, and project follow-ups."
                           }
                         ]
                       },
@@ -359,7 +402,12 @@ export const cheData = {
                           "peopleGroups": ["OBC"],
                           "povertyIndex": 0.48,
                           "cheWorkerName": "Pradeep Kumar",
-                          "cheWorkerOrganization": "Community Transformation Network"
+                          "cheWorkerOrganization": "Community Transformation Network",
+                          "unreachedPeopleGroupsAdopted": ["UPG-3", "UPG-4"],
+                          "cheWorkerCount": 7,
+                          "cheWorkerPartnerOrganizations": ["Neighborhood Development Fund"],
+                          "cheTrainedWorkers": 23,
+                          "mvcAdoptedWorkers": 3
                         },
                         "churches": [
                           {
@@ -368,6 +416,7 @@ export const cheData = {
                             "establishmentDate": "2018-03-18",
                             "updateDate": "2025-01-12",
                             "newCommitments": 7,
+                            "membersCount": 150,
                             "leftFaith": 0,
                             "fileUpload": "https://example.org/uploads/churches/greenfield-church-2025.pdf",
                             "remarks": "Young congregation with strong family focus."
@@ -440,7 +489,12 @@ export const cheData = {
                           "peopleGroups": ["BC", "Minority"],
                           "povertyIndex": 0.58,
                           "cheWorkerName": "Varsha Menon",
-                          "cheWorkerOrganization": "Telangana CHE Collective"
+                          "cheWorkerOrganization": "Telangana CHE Collective",
+                          "unreachedPeopleGroupsAdopted": ["UPG-5", "UPG-6"],
+                          "cheWorkerCount": 9,
+                          "cheWorkerPartnerOrganizations": ["Hope for Families Alliance", "Urban Renewal Cooperative"],
+                          "cheTrainedWorkers": 26,
+                          "mvcAdoptedWorkers": 4
                         },
                         "churches": [
                           {
@@ -449,6 +503,7 @@ export const cheData = {
                             "establishmentDate": "2015-02-18",
                             "updateDate": "2023-09-12",
                             "newCommitments": 14,
+                            "membersCount": 165,
                             "leftFaith": 1,
                             "fileUpload": "https://example.org/uploads/churches/evergreen-gospel-2023.pdf",
                             "remarks": "Weekend outreach to nearby apartments."
@@ -459,6 +514,7 @@ export const cheData = {
                             "establishmentDate": "2018-07-05",
                             "updateDate": "2024-04-28",
                             "newCommitments": 11,
+                            "membersCount": 180,
                             "leftFaith": 0,
                             "fileUpload": "https://example.org/uploads/churches/hope-ridge-2024.pdf",
                             "remarks": "IT professionals starting DBS pods."
@@ -550,7 +606,12 @@ export const cheData = {
                           "peopleGroups": ["SC"],
                           "povertyIndex": 0.64,
                           "cheWorkerName": "Suresh Yadav",
-                          "cheWorkerOrganization": "Telangana CHE Collective"
+                          "cheWorkerOrganization": "Telangana CHE Collective",
+                          "unreachedPeopleGroupsAdopted": ["UPG-7", "UPG-8"],
+                          "cheWorkerCount": 11,
+                          "cheWorkerPartnerOrganizations": ["Grassroots Link Coalition"],
+                          "cheTrainedWorkers": 29,
+                          "mvcAdoptedWorkers": 5
                         },
                         "churches": [
                           {
@@ -559,6 +620,7 @@ export const cheData = {
                             "establishmentDate": "2016-03-09",
                             "updateDate": "2022-10-17",
                             "newCommitments": 10,
+                            "membersCount": 195,
                             "leftFaith": 1,
                             "fileUpload": "https://example.org/uploads/churches/riverstone-2022.pdf",
                             "remarks": "Healing services attracting nearby hamlets."
@@ -569,6 +631,7 @@ export const cheData = {
                             "establishmentDate": "2020-01-26",
                             "updateDate": "2024-02-11",
                             "newCommitments": 8,
+                            "membersCount": 210,
                             "leftFaith": 0,
                             "fileUpload": "https://example.org/uploads/churches/bethany-streams-2024.pdf",
                             "remarks": "Focus on farmers during drought relief."
@@ -1136,7 +1199,12 @@ export const cheData = {
                           "peopleGroups": ["Luo", "Kikuyu", "Luhya"],
                           "povertyIndex": 0.71,
                           "cheWorkerName": "Mary Achieng",
-                          "cheWorkerOrganization": "Urban Hope CHE Network"
+                          "cheWorkerOrganization": "Urban Hope CHE Network",
+                          "unreachedPeopleGroupsAdopted": ["UPG-9", "UPG-10"],
+                          "cheWorkerCount": 13,
+                          "cheWorkerPartnerOrganizations": ["Global CHE Accelerator", "Compassion Net"],
+                          "cheTrainedWorkers": 32,
+                          "mvcAdoptedWorkers": 2
                         },
                         "churches": [
                           {
@@ -1145,6 +1213,7 @@ export const cheData = {
                             "establishmentDate": "2015-07-09",
                             "updateDate": "2025-01-16",
                             "newCommitments": 25,
+                            "membersCount": 120,
                             "leftFaith": 3,
                             "fileUpload": "https://example.org/uploads/churches/joy-estate-center-2025.pdf",
                             "remarks": "Strong outreach in youth and children ministry."
@@ -1223,7 +1292,12 @@ export const cheData = {
                           "peopleGroups": ["Cebuano", "Manobo"],
                           "povertyIndex": 0.58,
                           "cheWorkerName": "Jonas Villamor",
-                          "cheWorkerOrganization": "Mindanao CHE Alliance"
+                          "cheWorkerOrganization": "Mindanao CHE Alliance",
+                          "unreachedPeopleGroupsAdopted": ["UPG-11", "UPG-12"],
+                          "cheWorkerCount": 15,
+                          "cheWorkerPartnerOrganizations": ["Regional Health Collective", "Community Impact Trust"],
+                          "cheTrainedWorkers": 35,
+                          "mvcAdoptedWorkers": 3
                         },
                         "churches": [
                           {
@@ -1232,6 +1306,7 @@ export const cheData = {
                             "establishmentDate": "2012-02-14",
                             "updateDate": "2025-02-05",
                             "newCommitments": 14,
+                            "membersCount": 135,
                             "leftFaith": 1,
                             "fileUpload": "https://example.org/uploads/churches/harvest-valley-2025.pdf",
                             "remarks": "Expanding mid-week discipleship groups."
@@ -1310,7 +1385,12 @@ export const cheData = {
                           "peopleGroups": ["Cebuano"],
                           "povertyIndex": 0.64,
                           "cheWorkerName": "Mae Santos",
-                          "cheWorkerOrganization": "Mindanao CHE Alliance"
+                          "cheWorkerOrganization": "Mindanao CHE Alliance",
+                          "unreachedPeopleGroupsAdopted": ["UPG-13", "UPG-14"],
+                          "cheWorkerCount": 5,
+                          "cheWorkerPartnerOrganizations": ["Neighborhood Development Fund"],
+                          "cheTrainedWorkers": 38,
+                          "mvcAdoptedWorkers": 4
                         },
                         "churches": [
                           {
@@ -1319,6 +1399,7 @@ export const cheData = {
                             "establishmentDate": "2017-06-20",
                             "updateDate": "2025-02-08",
                             "newCommitments": 11,
+                            "membersCount": 150,
                             "leftFaith": 0,
                             "fileUpload": "https://example.org/uploads/churches/riverbend-network-2025.pdf",
                             "remarks": "Micro churches multiplying in remote hamlets."
@@ -1402,7 +1483,12 @@ export const cheData = {
                           "peopleGroups": ["Bagisu", "Iteso"],
                           "povertyIndex": 0.55,
                           "cheWorkerName": "Sarah Nambale",
-                          "cheWorkerOrganization": "Eastern CHE Alliance"
+                          "cheWorkerOrganization": "Eastern CHE Alliance",
+                          "unreachedPeopleGroupsAdopted": ["UPG-15", "UPG-16"],
+                          "cheWorkerCount": 7,
+                          "cheWorkerPartnerOrganizations": ["Hope for Families Alliance", "Urban Renewal Cooperative"],
+                          "cheTrainedWorkers": 41,
+                          "mvcAdoptedWorkers": 5
                         },
                         "churches": [
                           {
@@ -1411,6 +1497,7 @@ export const cheData = {
                             "establishmentDate": "2014-06-11",
                             "updateDate": "2023-11-04",
                             "newCommitments": 21,
+                            "membersCount": 165,
                             "leftFaith": 3,
                             "fileUpload": "https://example.org/uploads/churches/hope-springs-2023.pdf",
                             "remarks": "New children's fellowship launched in August."
@@ -1421,6 +1508,7 @@ export const cheData = {
                             "establishmentDate": "2019-02-22",
                             "updateDate": "2024-05-15",
                             "newCommitments": 13,
+                            "membersCount": 180,
                             "leftFaith": 1,
                             "fileUpload": "https://example.org/uploads/churches/mount-elgon-2024.pdf",
                             "remarks": "Growing small groups focused on young families."
@@ -1504,7 +1592,12 @@ export const cheData = {
                           "peopleGroups": ["Basoga"],
                           "povertyIndex": 0.63,
                           "cheWorkerName": "Michael Buyinza",
-                          "cheWorkerOrganization": "Eastern CHE Alliance"
+                          "cheWorkerOrganization": "Eastern CHE Alliance",
+                          "unreachedPeopleGroupsAdopted": ["UPG-17", "UPG-18"],
+                          "cheWorkerCount": 9,
+                          "cheWorkerPartnerOrganizations": ["Grassroots Link Coalition"],
+                          "cheTrainedWorkers": 44,
+                          "mvcAdoptedWorkers": 2
                         },
                         "churches": [
                           {
@@ -1513,6 +1606,7 @@ export const cheData = {
                             "establishmentDate": "2017-09-30",
                             "updateDate": "2022-12-20",
                             "newCommitments": 17,
+                            "membersCount": 195,
                             "leftFaith": 2,
                             "fileUpload": "https://example.org/uploads/churches/river-valley-2022.pdf",
                             "remarks": "Mentoring hub for lay leaders."
@@ -1523,6 +1617,7 @@ export const cheData = {
                             "establishmentDate": "2021-04-19",
                             "updateDate": "2025-02-08",
                             "newCommitments": 9,
+                            "membersCount": 210,
                             "leftFaith": 0,
                             "fileUpload": "https://example.org/uploads/churches/new-life-2025.pdf",
                             "remarks": "Youth-run DBS clusters multiplying."
@@ -1640,7 +1735,12 @@ export const cheData = {
                           "peopleGroups": ["Acholi"],
                           "povertyIndex": 0.67,
                           "cheWorkerName": "Grace Ayaa",
-                          "cheWorkerOrganization": "Northern Restoration Network"
+                          "cheWorkerOrganization": "Northern Restoration Network",
+                          "unreachedPeopleGroupsAdopted": ["UPG-19", "UPG-20"],
+                          "cheWorkerCount": 11,
+                          "cheWorkerPartnerOrganizations": ["Global CHE Accelerator", "Compassion Net"],
+                          "cheTrainedWorkers": 47,
+                          "mvcAdoptedWorkers": 3
                         },
                         "churches": [
                           {
@@ -1649,6 +1749,7 @@ export const cheData = {
                             "establishmentDate": "2011-08-13",
                             "updateDate": "2023-04-06",
                             "newCommitments": 28,
+                            "membersCount": 120,
                             "leftFaith": 4,
                             "fileUpload": "https://example.org/uploads/churches/starlight-2023.pdf",
                             "remarks": "Trauma healing and reconciliation gatherings."
@@ -1748,7 +1849,12 @@ export const cheData = {
                           "peopleGroups": ["Ribeirinho", "Quilombola"],
                           "povertyIndex": 0.58,
                           "cheWorkerName": "Joana Campos",
-                          "cheWorkerOrganization": "Amazon Delta CHE Alliance"
+                          "cheWorkerOrganization": "Amazon Delta CHE Alliance",
+                          "unreachedPeopleGroupsAdopted": ["UPG-21", "UPG-22"],
+                          "cheWorkerCount": 13,
+                          "cheWorkerPartnerOrganizations": ["Regional Health Collective", "Community Impact Trust"],
+                          "cheTrainedWorkers": 50,
+                          "mvcAdoptedWorkers": 4
                         },
                         "churches": [
                           {
@@ -1757,6 +1863,7 @@ export const cheData = {
                             "establishmentDate": "2012-03-14",
                             "updateDate": "2025-01-18",
                             "newCommitments": 14,
+                            "membersCount": 135,
                             "leftFaith": 1,
                             "fileUpload": "https://example.org/uploads/churches/brazil-luz-ilha-2025.pdf",
                             "remarks": "Launched floating CHE listening circles."
@@ -1767,6 +1874,7 @@ export const cheData = {
                             "establishmentDate": "2018-09-01",
                             "updateDate": "2024-11-26",
                             "newCommitments": 9,
+                            "membersCount": 150,
                             "leftFaith": 0,
                             "fileUpload": "https://example.org/uploads/churches/brazil-soure-fellowship-2024.pdf",
                             "remarks": "Expanded DBS among fisher cooperatives."
@@ -1855,7 +1963,12 @@ export const cheData = {
                           "peopleGroups": ["Munduruku"],
                           "povertyIndex": 0.51,
                           "cheWorkerName": "Ester Oliveira",
-                          "cheWorkerOrganization": "Tapajós CHE Collaborative"
+                          "cheWorkerOrganization": "Tapajós CHE Collaborative",
+                          "unreachedPeopleGroupsAdopted": ["UPG-23", "UPG-24"],
+                          "cheWorkerCount": 15,
+                          "cheWorkerPartnerOrganizations": ["Neighborhood Development Fund"],
+                          "cheTrainedWorkers": 53,
+                          "mvcAdoptedWorkers": 5
                         },
                         "churches": [
                           {
@@ -1864,6 +1977,7 @@ export const cheData = {
                             "establishmentDate": "2016-02-08",
                             "updateDate": "2024-12-28",
                             "newCommitments": 11,
+                            "membersCount": 165,
                             "leftFaith": 1,
                             "fileUpload": "https://example.org/uploads/churches/brazil-bosque-2024.pdf",
                             "remarks": "Youth canoe outreaches extend DBS upstream."
@@ -1941,7 +2055,12 @@ export const cheData = {
                           "peopleGroups": ["Terena"],
                           "povertyIndex": 0.47,
                           "cheWorkerName": "Pedro Araujo",
-                          "cheWorkerOrganization": "Cerrado CHE Catalyst"
+                          "cheWorkerOrganization": "Cerrado CHE Catalyst",
+                          "unreachedPeopleGroupsAdopted": ["UPG-25", "UPG-26"],
+                          "cheWorkerCount": 5,
+                          "cheWorkerPartnerOrganizations": ["Hope for Families Alliance", "Urban Renewal Cooperative"],
+                          "cheTrainedWorkers": 56,
+                          "mvcAdoptedWorkers": 2
                         },
                         "churches": [
                           {
@@ -1950,6 +2069,7 @@ export const cheData = {
                             "establishmentDate": "2014-05-22",
                             "updateDate": "2024-10-05",
                             "newCommitments": 17,
+                            "membersCount": 180,
                             "leftFaith": 2,
                             "fileUpload": "https://example.org/uploads/churches/brazil-valeclara-2024.pdf",
                             "remarks": "CHE skills now part of youth hiking clubs."
@@ -2028,7 +2148,12 @@ export const cheData = {
                           "peopleGroups": ["Tzotzil"],
                           "povertyIndex": 0.66,
                           "cheWorkerName": "David Morales",
-                          "cheWorkerOrganization": "Sierra Madre CHE Hub"
+                          "cheWorkerOrganization": "Sierra Madre CHE Hub",
+                          "unreachedPeopleGroupsAdopted": ["UPG-27", "UPG-28"],
+                          "cheWorkerCount": 7,
+                          "cheWorkerPartnerOrganizations": ["Grassroots Link Coalition"],
+                          "cheTrainedWorkers": 59,
+                          "mvcAdoptedWorkers": 3
                         },
                         "churches": [
                           {
@@ -2037,6 +2162,7 @@ export const cheData = {
                             "establishmentDate": "2017-04-30",
                             "updateDate": "2025-01-03",
                             "newCommitments": 21,
+                            "membersCount": 195,
                             "leftFaith": 3,
                             "fileUpload": "https://example.org/uploads/churches/mexico-monteluz-2025.pdf",
                             "remarks": "Family DBS started using bilingual scripts."
@@ -2117,7 +2243,12 @@ export const cheData = {
                           "peopleGroups": ["Zapotec"],
                           "povertyIndex": 0.63,
                           "cheWorkerName": "Marisol Cruz",
-                          "cheWorkerOrganization": "Cloud Ridge CHE Collective"
+                          "cheWorkerOrganization": "Cloud Ridge CHE Collective",
+                          "unreachedPeopleGroupsAdopted": ["UPG-29", "UPG-30"],
+                          "cheWorkerCount": 9,
+                          "cheWorkerPartnerOrganizations": ["Global CHE Accelerator", "Compassion Net"],
+                          "cheTrainedWorkers": 62,
+                          "mvcAdoptedWorkers": 4
                         },
                         "churches": [
                           {
@@ -2126,6 +2257,7 @@ export const cheData = {
                             "establishmentDate": "2013-06-11",
                             "updateDate": "2024-10-29",
                             "newCommitments": 12,
+                            "membersCount": 210,
                             "leftFaith": 1,
                             "fileUpload": "https://example.org/uploads/churches/mexico-sendero-2024.pdf",
                             "remarks": "Story cloth DBS for artisan guilds."
@@ -2204,7 +2336,12 @@ export const cheData = {
                           "peopleGroups": ["Gahuku"],
                           "povertyIndex": 0.59,
                           "cheWorkerName": "Nora Kange",
-                          "cheWorkerOrganization": "Highlands CHE Partnership"
+                          "cheWorkerOrganization": "Highlands CHE Partnership",
+                          "unreachedPeopleGroupsAdopted": ["UPG-31", "UPG-32"],
+                          "cheWorkerCount": 11,
+                          "cheWorkerPartnerOrganizations": ["Regional Health Collective", "Community Impact Trust"],
+                          "cheTrainedWorkers": 65,
+                          "mvcAdoptedWorkers": 5
                         },
                         "churches": [
                           {
@@ -2213,6 +2350,7 @@ export const cheData = {
                             "establishmentDate": "2011-08-17",
                             "updateDate": "2024-12-03",
                             "newCommitments": 16,
+                            "membersCount": 120,
                             "leftFaith": 2,
                             "fileUpload": "https://example.org/uploads/churches/png-kafehill-2024.pdf",
                             "remarks": "CHE coaches launched fatherhood circles."
@@ -2293,7 +2431,12 @@ export const cheData = {
                           "peopleGroups": ["Kiwai"],
                           "povertyIndex": 0.61,
                           "cheWorkerName": "Jonah Opa",
-                          "cheWorkerOrganization": "Fly River CHE Movement"
+                          "cheWorkerOrganization": "Fly River CHE Movement",
+                          "unreachedPeopleGroupsAdopted": ["UPG-33", "UPG-34"],
+                          "cheWorkerCount": 13,
+                          "cheWorkerPartnerOrganizations": ["Neighborhood Development Fund"],
+                          "cheTrainedWorkers": 68,
+                          "mvcAdoptedWorkers": 2
                         },
                         "churches": [
                           {
@@ -2302,6 +2445,7 @@ export const cheData = {
                             "establishmentDate": "2019-01-19",
                             "updateDate": "2025-01-12",
                             "newCommitments": 13,
+                            "membersCount": 135,
                             "leftFaith": 1,
                             "fileUpload": "https://example.org/uploads/churches/png-korona-2025.pdf",
                             "remarks": "Prayer canoes visiting fishing camps weekly."
@@ -2389,7 +2533,12 @@ export const cheData = {
                           "peopleGroups": ["Kolla"],
                           "povertyIndex": 0.57,
                           "cheWorkerName": "Camila Bazán",
-                          "cheWorkerOrganization": "Altiplano CHE Movement"
+                          "cheWorkerOrganization": "Altiplano CHE Movement",
+                          "unreachedPeopleGroupsAdopted": ["UPG-35", "UPG-36"],
+                          "cheWorkerCount": 15,
+                          "cheWorkerPartnerOrganizations": ["Hope for Families Alliance", "Urban Renewal Cooperative"],
+                          "cheTrainedWorkers": 71,
+                          "mvcAdoptedWorkers": 3
                         },
                         "churches": [
                           {
@@ -2398,6 +2547,7 @@ export const cheData = {
                             "establishmentDate": "2013-08-20",
                             "updateDate": "2024-12-14",
                             "newCommitments": 10,
+                            "membersCount": 150,
                             "leftFaith": 1,
                             "fileUpload": "https://example.org/uploads/churches/argentina-que-bright-2024.pdf",
                             "remarks": "CHE farmers now leading DBS at salt pans."
@@ -2476,7 +2626,12 @@ export const cheData = {
                           "peopleGroups": ["Tamang"],
                           "povertyIndex": 0.61,
                           "cheWorkerName": "Prabin Tamang",
-                          "cheWorkerOrganization": "Himalayan CHE Collective"
+                          "cheWorkerOrganization": "Himalayan CHE Collective",
+                          "unreachedPeopleGroupsAdopted": ["UPG-37", "UPG-38"],
+                          "cheWorkerCount": 5,
+                          "cheWorkerPartnerOrganizations": ["Grassroots Link Coalition"],
+                          "cheTrainedWorkers": 74,
+                          "mvcAdoptedWorkers": 4
                         },
                         "churches": [
                           {
@@ -2485,6 +2640,7 @@ export const cheData = {
                             "establishmentDate": "2016-05-11",
                             "updateDate": "2024-12-08",
                             "newCommitments": 18,
+                            "membersCount": 165,
                             "leftFaith": 2,
                             "fileUpload": "https://example.org/uploads/churches/nepal-gaida-2024.pdf",
                             "remarks": "CHE storytelling clubs started along trekking route."
@@ -2563,7 +2719,12 @@ export const cheData = {
                           "peopleGroups": ["Ashanti"],
                           "povertyIndex": 0.48,
                           "cheWorkerName": "Yaw Osei",
-                          "cheWorkerOrganization": "Ashanti CHE Initiative"
+                          "cheWorkerOrganization": "Ashanti CHE Initiative",
+                          "unreachedPeopleGroupsAdopted": ["UPG-39", "UPG-40"],
+                          "cheWorkerCount": 7,
+                          "cheWorkerPartnerOrganizations": ["Global CHE Accelerator", "Compassion Net"],
+                          "cheTrainedWorkers": 77,
+                          "mvcAdoptedWorkers": 5
                         },
                         "churches": [
                           {
@@ -2572,6 +2733,7 @@ export const cheData = {
                             "establishmentDate": "2010-02-08",
                             "updateDate": "2025-01-17",
                             "newCommitments": 24,
+                            "membersCount": 180,
                             "leftFaith": 2,
                             "fileUpload": "https://example.org/uploads/churches/ghana-foase-2025.pdf",
                             "remarks": "Trade apprentices formed 3 DBS hubs."
@@ -2650,7 +2812,12 @@ export const cheData = {
                           "peopleGroups": ["Hispanic", "Anglo"],
                           "povertyIndex": 0.34,
                           "cheWorkerName": "Lauren Ortiz",
-                          "cheWorkerOrganization": "Southwest CHE Collaborative"
+                          "cheWorkerOrganization": "Southwest CHE Collaborative",
+                          "unreachedPeopleGroupsAdopted": ["UPG-41", "UPG-42"],
+                          "cheWorkerCount": 9,
+                          "cheWorkerPartnerOrganizations": ["Regional Health Collective", "Community Impact Trust"],
+                          "cheTrainedWorkers": 80,
+                          "mvcAdoptedWorkers": 2
                         },
                         "churches": [
                           {
@@ -2659,6 +2826,7 @@ export const cheData = {
                             "establishmentDate": "2018-03-03",
                             "updateDate": "2024-12-21",
                             "newCommitments": 15,
+                            "membersCount": 195,
                             "leftFaith": 2,
                             "fileUpload": "https://example.org/uploads/churches/usa-desert-bloom-2024.pdf",
                             "remarks": "CHE makerspace mentors host bilingual DBS."
@@ -2737,7 +2905,12 @@ export const cheData = {
                           "peopleGroups": ["Arsi"],
                           "povertyIndex": 0.53,
                           "cheWorkerName": "Aster Bekele",
-                          "cheWorkerOrganization": "Oromia CHE Forum"
+                          "cheWorkerOrganization": "Oromia CHE Forum",
+                          "unreachedPeopleGroupsAdopted": ["UPG-43", "UPG-44"],
+                          "cheWorkerCount": 11,
+                          "cheWorkerPartnerOrganizations": ["Neighborhood Development Fund"],
+                          "cheTrainedWorkers": 83,
+                          "mvcAdoptedWorkers": 3
                         },
                         "churches": [
                           {
@@ -2746,6 +2919,7 @@ export const cheData = {
                             "establishmentDate": "2014-05-09",
                             "updateDate": "2024-12-02",
                             "newCommitments": 19,
+                            "membersCount": 210,
                             "leftFaith": 3,
                             "fileUpload": "https://example.org/uploads/churches/ethiopia-birke-hope.pdf",
                             "remarks": "Coffee cooperative leaders host DBS at dawn."
@@ -2756,6 +2930,7 @@ export const cheData = {
                             "establishmentDate": "2019-07-13",
                             "updateDate": "2025-01-05",
                             "newCommitments": 11,
+                            "membersCount": 120,
                             "leftFaith": 1,
                             "fileUpload": "https://example.org/uploads/churches/ethiopia-dodola-fellowship.pdf",
                             "remarks": "Shepherd youth leading weekend CHE visits."
@@ -2850,7 +3025,12 @@ export const cheData = {
                           "peopleGroups": ["Arsi"],
                           "povertyIndex": 0.49,
                           "cheWorkerName": "Kibru Tadesse",
-                          "cheWorkerOrganization": "Oromia CHE Forum"
+                          "cheWorkerOrganization": "Oromia CHE Forum",
+                          "unreachedPeopleGroupsAdopted": ["UPG-45", "UPG-46"],
+                          "cheWorkerCount": 13,
+                          "cheWorkerPartnerOrganizations": ["Hope for Families Alliance", "Urban Renewal Cooperative"],
+                          "cheTrainedWorkers": 86,
+                          "mvcAdoptedWorkers": 4
                         },
                         "churches": [
                           {
@@ -2859,6 +3039,7 @@ export const cheData = {
                             "establishmentDate": "2016-09-11",
                             "updateDate": "2024-11-25",
                             "newCommitments": 13,
+                            "membersCount": 135,
                             "leftFaith": 2,
                             "fileUpload": "https://example.org/uploads/churches/ethiopia-abune.pdf",
                             "remarks": "Mothers prayer groups mentoring girls clubs."
@@ -2953,7 +3134,12 @@ export const cheData = {
                           "peopleGroups": ["Pamona"],
                           "povertyIndex": 0.52,
                           "cheWorkerName": "Yusuf Londa",
-                          "cheWorkerOrganization": "Sulawesi CHE Alliance"
+                          "cheWorkerOrganization": "Sulawesi CHE Alliance",
+                          "unreachedPeopleGroupsAdopted": ["UPG-47", "UPG-48"],
+                          "cheWorkerCount": 15,
+                          "cheWorkerPartnerOrganizations": ["Grassroots Link Coalition"],
+                          "cheTrainedWorkers": 89,
+                          "mvcAdoptedWorkers": 5
                         },
                         "churches": [
                           {
@@ -2962,6 +3148,7 @@ export const cheData = {
                             "establishmentDate": "2015-02-18",
                             "updateDate": "2025-01-09",
                             "newCommitments": 16,
+                            "membersCount": 150,
                             "leftFaith": 1,
                             "fileUpload": "https://example.org/uploads/churches/indonesia-teluk-2025.pdf",
                             "remarks": "Fisher leaders launched floating CHE visits."
@@ -2972,6 +3159,7 @@ export const cheData = {
                             "establishmentDate": "2019-11-03",
                             "updateDate": "2024-12-29",
                             "newCommitments": 9,
+                            "membersCount": 165,
                             "leftFaith": 1,
                             "fileUpload": "https://example.org/uploads/churches/indonesia-pendolo-hope.pdf",
                             "remarks": "Youth scuba club hosts DBS while diving reefs."
@@ -3060,7 +3248,12 @@ export const cheData = {
                           "peopleGroups": ["Sundanese"],
                           "povertyIndex": 0.44,
                           "cheWorkerName": "Nadia Putri",
-                          "cheWorkerOrganization": "Java CHE Movement"
+                          "cheWorkerOrganization": "Java CHE Movement",
+                          "unreachedPeopleGroupsAdopted": ["UPG-49", "UPG-50"],
+                          "cheWorkerCount": 5,
+                          "cheWorkerPartnerOrganizations": ["Global CHE Accelerator", "Compassion Net"],
+                          "cheTrainedWorkers": 92,
+                          "mvcAdoptedWorkers": 2
                         },
                         "churches": [
                           {
@@ -3069,6 +3262,7 @@ export const cheData = {
                             "establishmentDate": "2017-07-02",
                             "updateDate": "2024-12-27",
                             "newCommitments": 22,
+                            "membersCount": 180,
                             "leftFaith": 2,
                             "fileUpload": "https://example.org/uploads/churches/indonesia-tunas-2024.pdf",
                             "remarks": "Artisan cooperatives telling CHE stories in batik motifs."
@@ -3155,7 +3349,12 @@ export const cheData = {
                           "peopleGroups": ["Matsigenka", "Quechua"],
                           "povertyIndex": 0.58,
                           "cheWorkerName": "Rosa Quispe",
-                          "cheWorkerOrganization": "Andes Amazon CHE"
+                          "cheWorkerOrganization": "Andes Amazon CHE",
+                          "unreachedPeopleGroupsAdopted": ["UPG-51", "UPG-52"],
+                          "cheWorkerCount": 7,
+                          "cheWorkerPartnerOrganizations": ["Regional Health Collective", "Community Impact Trust"],
+                          "cheTrainedWorkers": 95,
+                          "mvcAdoptedWorkers": 3
                         },
                         "churches": [
                           {
@@ -3164,6 +3363,7 @@ export const cheData = {
                             "establishmentDate": "2013-09-04",
                             "updateDate": "2024-12-03",
                             "newCommitments": 20,
+                            "membersCount": 195,
                             "leftFaith": 2,
                             "fileUpload": "https://example.org/uploads/churches/peru-selva-2024.pdf",
                             "remarks": "Jungle DBS trails following cacao harvest cycles."
@@ -3252,7 +3452,12 @@ export const cheData = {
                           "peopleGroups": ["Aymara"],
                           "povertyIndex": 0.64,
                           "cheWorkerName": "Javier Mamani",
-                          "cheWorkerOrganization": "Lake Titicaca CHE"
+                          "cheWorkerOrganization": "Lake Titicaca CHE",
+                          "unreachedPeopleGroupsAdopted": ["UPG-53", "UPG-54"],
+                          "cheWorkerCount": 9,
+                          "cheWorkerPartnerOrganizations": ["Neighborhood Development Fund"],
+                          "cheTrainedWorkers": 98,
+                          "mvcAdoptedWorkers": 4
                         },
                         "churches": [
                           {
@@ -3261,6 +3466,7 @@ export const cheData = {
                             "establishmentDate": "2018-01-20",
                             "updateDate": "2025-01-12",
                             "newCommitments": 14,
+                            "membersCount": 210,
                             "leftFaith": 1,
                             "fileUpload": "https://example.org/uploads/churches/peru-altiplano-2025.pdf",
                             "remarks": "CHE alpaca herders lead family circles nightly."

@@ -1,7 +1,6 @@
 // src/components/VillageReport.jsx
 import { useState } from "react";
 import ChurchesSection from "./report/ChurchesSection";
-import GrowthStatsSection from "./report/GrowthStatsSection";
 import TrainingsSection from "./report/TrainingsSection";
 import ProjectsSection from "./report/ProjectsSection";
 import StoriesSection from "./report/StoriesSection";
@@ -90,12 +89,6 @@ function VillageReport({ village }) {
 
       <div className="report-panel app-card p-4">
         {activeTab === "churches" && <ChurchesSection churches={village.churches} />}
-        {activeTab === "growth" && (
-          <GrowthStatsSection
-            growthStatistics={village.growthStatistics}
-            population={village.cheVillageInformation?.population}
-          />
-        )}
         {activeTab === "trainings" && <TrainingsSection trainings={village.trainings} />}
         {activeTab === "projects" && <ProjectsSection projects={village.projects} />}
         {activeTab === "stories" && (

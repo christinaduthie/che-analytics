@@ -9,17 +9,11 @@ import {
   buildYearOptions,
   filterByYear,
 } from "../../utils/chartUtils";
-import DateRangeSlider from "./DateRangeSlider";
-import {
-  buildDefaultDateRange,
-  filterByDateRange,
-} from "../../utils/dateRangeUtils";
 import { downloadTablePdf } from "../../utils/pdfUtils";
 
 function TrainingsSection({ trainings = [] }) {
   const [selectedYear, setSelectedYear] = useState("all");
   const [chartView, setChartView] = useState("timeline");
-  const [dateRange, setDateRange] = useState(() => buildDefaultDateRange());
 
   const yearOptions = useMemo(
     () => buildYearOptions(trainings, "updatedDate"),
@@ -31,10 +25,7 @@ function TrainingsSection({ trainings = [] }) {
     [trainings, selectedYear]
   );
 
-  const filteredTrainings = useMemo(
-    () => filterByDateRange(yearFilteredTrainings, "updatedDate", dateRange),
-    [yearFilteredTrainings, dateRange]
-  );
+  const filteredTrainings = yearFilteredTrainings;
 
   const totalParticipants = useMemo(
     () => filteredTrainings.reduce((sum, training) => sum + training.peopleTrained, 0),
@@ -71,8 +62,7 @@ function TrainingsSection({ trainings = [] }) {
 
   return (
     <section className="mb-4">
-      <div className="report-toolbar d-flex flex-column flex-xl-row justify-content-between align-items-start gap-3 mb-3">
-        <DateRangeSlider value={dateRange} onChange={setDateRange} />
+      <div className="report-toolbar d-flex flex-column flex-xl-row justify-content-end align-items-start gap-3 mb-3">
         <button
           type="button"
           className="btn btn-download-primary"

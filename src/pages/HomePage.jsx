@@ -5,63 +5,140 @@ import ScopeReportTabs from "../components/report/ScopeReportTabs";
 
 const normalizeContinentName = (value) => value ?? "Unspecified";
 
+const buildFlatSeries = (value, range) => {
+  const numericValue = Number(value) || 0;
+  const fromLabel = range?.from || "Start";
+  const toLabel = range?.to || "Current";
+  if (fromLabel === toLabel) {
+    return [
+      { label: fromLabel, value: numericValue },
+      { label: `${toLabel}-current`, value: numericValue },
+    ];
+  }
+  return [
+    { label: fromLabel, value: numericValue },
+    { label: toLabel, value: numericValue },
+  ];
+};
+
+const buildCoverageSeries = (selector) => (data, range) => {
+  const stats = buildCoverageStats(data.villages ?? []);
+  const value = selector(stats);
+  return buildFlatSeries(value, range);
+};
+
+const buildCollectionSeries = (collectionKey, dateField, resolver) =>
+  (data, range) =>
+    buildMonthlySeries(data?.[collectionKey] ?? [], dateField, range, resolver);
+
 const movementMetricDescriptors = [
   {
-    key: "churches",
+    key: "cheVillages",
+    label: "CHE Villages",
+    valueAccessor: ({ coverage }) => coverage.villages ?? 0,
+    buildSeries: buildCoverageSeries((stats) => stats.villages ?? 0),
+  },
+  {
+    key: "organizations",
+    label: "Organizations",
+    valueAccessor: ({ coverage }) => coverage.organizations ?? 0,
+    buildSeries: buildCoverageSeries((stats) => stats.organizations ?? 0),
+  },
+  {
+    key: "population",
+    label: "Population",
+    valueAccessor: ({ impact }) => impact.population ?? 0,
+    buildSeries: (data, range) =>
+      buildPopulationSeries(data?.villages ?? [], range),
+  },
+  {
+    key: "languageGroups",
+    label: "Language Groups",
+    valueAccessor: ({ coverage }) => coverage.languages ?? 0,
+    buildSeries: buildCoverageSeries((stats) => stats.languages ?? 0),
+  },
+  {
+    key: "unreachedPeopleGroups",
+    label: "Unreached People Groups Adopted",
+    valueAccessor: ({ coverage }) => coverage.unreachedPeopleGroups ?? 0,
+    buildSeries: buildCoverageSeries((stats) => stats.unreachedPeopleGroups ?? 0),
+  },
+  {
+    key: "povertyIndex",
+    label: "Poverty Index",
+    valueAccessor: ({ coverage }) => coverage.povertyIndex ?? null,
+    formatter: (value) =>
+      value === null || value === undefined
+        ? "—"
+        : (Math.round(Number(value) * 100) / 100).toFixed(2),
+    buildSeries: buildCoverageSeries((stats) => stats.povertyIndex ?? 0),
+  },
+  {
+    key: "cheWorkers",
+    label: "CHE Workers",
+    valueAccessor: ({ coverage }) => coverage.cheWorkers ?? 0,
+    buildSeries: buildCoverageSeries((stats) => stats.cheWorkers ?? 0),
+  },
+  {
+    key: "cheWorkerPartners",
+    label: "CHE Worker Partner Organizations",
+    valueAccessor: ({ coverage }) => coverage.workerPartnerOrganizations ?? 0,
+    buildSeries: buildCoverageSeries((stats) => stats.workerPartnerOrganizations ?? 0),
+  },
+  {
+    key: "cheTrainedWorkers",
+    label: "CHE Trained Workers",
+    valueAccessor: ({ coverage }) => coverage.cheTrainedWorkers ?? 0,
+    buildSeries: buildCoverageSeries((stats) => stats.cheTrainedWorkers ?? 0),
+  },
+  {
+    key: "mvcAdoptedWorkers",
+    label: "MVC Adopted Workers",
+    valueAccessor: ({ coverage }) => coverage.mvcWorkers ?? 0,
+    buildSeries: buildCoverageSeries((stats) => stats.mvcWorkers ?? 0),
+  },
+  {
+    key: "cheChurches",
     label: "CHE Churches",
-    valueAccessor: (stats) => stats.movement.churches,
+    valueAccessor: ({ impact }) => impact.movement.churches ?? 0,
     buildSeries: (data, range) =>
       buildMonthlySeries(data.churches, "updateDate", range, () => 1),
   },
   {
-    key: "commitments",
-    label: "Commitments",
-    valueAccessor: (stats) => stats.movement.commitments,
-    buildSeries: (data, range) =>
-      buildMonthlySeries(
-        data.churches,
-        "updateDate",
-        range,
-        (item) => item.newCommitments ?? 0
-      ),
+    key: "cheChurchMembers",
+    label: "CHE Church Members",
+    valueAccessor: ({ impact }) => impact.movement.churchMembers ?? 0,
+    buildSeries: buildCollectionSeries(
+      "churches",
+      "updateDate",
+      (item) => item.membersCount ?? 0
+    ),
   },
   {
-    key: "peopleTrained",
-    label: "People Trained",
-    valueAccessor: (stats) => stats.movement.peopleTrained,
-    buildSeries: (data, range) =>
-      buildMonthlySeries(
-        data.trainings,
-        "updatedDate",
-        range,
-        (item) => item.peopleTrained ?? 0
-      ),
-  },
-  {
-    key: "ches",
-    label: "CHEs",
-    valueAccessor: (stats) => stats.movement.ches,
+    key: "villageChes",
+    label: "Village CHEs",
+    valueAccessor: ({ impact }) => impact.movement.ches ?? 0,
     buildSeries: (data, range) =>
       buildGrowthCategorySeries(data.growthStats, "CHEs", range),
   },
   {
-    key: "committeeMembers",
-    label: "CHE Committee Members",
-    valueAccessor: (stats) => stats.movement.committeeMembers,
-    buildSeries: (data, range) =>
-      buildGrowthCategorySeries(data.growthStats, "Committee Members", range),
-  },
-  {
     key: "committees",
-    label: "CHE Committees",
-    valueAccessor: (stats) => stats.movement.committees,
+    label: "Committees",
+    valueAccessor: ({ impact }) => impact.movement.committees ?? 0,
     buildSeries: (data, range) =>
       buildGrowthCategorySeries(data.growthStats, "Committees", range),
   },
   {
+    key: "committeeMembers",
+    label: "Committee Members",
+    valueAccessor: ({ impact }) => impact.movement.committeeMembers ?? 0,
+    buildSeries: (data, range) =>
+      buildGrowthCategorySeries(data.growthStats, "Committee Members", range),
+  },
+  {
     key: "dbs",
     label: "Discovery Bible Studies",
-    valueAccessor: (stats) => stats.movement.dbs,
+    valueAccessor: ({ impact }) => impact.movement.dbs ?? 0,
     buildSeries: (data, range) =>
       buildGrowthCategorySeries(
         data.growthStats,
@@ -72,14 +149,14 @@ const movementMetricDescriptors = [
   {
     key: "growthGroups",
     label: "Growth Groups",
-    valueAccessor: (stats) => stats.movement.growthGroups,
+    valueAccessor: ({ impact }) => impact.movement.growthGroups ?? 0,
     buildSeries: (data, range) =>
       buildGrowthCategorySeries(data.growthStats, "Growth Groups", range),
   },
   {
     key: "homesVisited",
     label: "Homes Visited",
-    valueAccessor: (stats) => stats.movement.homesVisited,
+    valueAccessor: ({ impact }) => impact.movement.homesVisited ?? 0,
     buildSeries: (data, range) =>
       buildGrowthCategorySeries(
         data.growthStats,
@@ -88,11 +165,26 @@ const movementMetricDescriptors = [
       ),
   },
   {
-    key: "population",
-    label: "Population",
-    valueAccessor: (stats) => stats.population ?? 0,
-    buildSeries: (data, range) =>
-      buildPopulationSeries(data?.villages ?? [], range),
+    key: "projectInitiatives",
+    label: "Project Initiatives",
+    valueAccessor: ({ impact }) => impact.projects.count ?? 0,
+    buildSeries: buildCollectionSeries("projects", "updatedDate", () => 1),
+  },
+  {
+    key: "projectBeneficiaries",
+    label: "People Benefited through Project Initiatives",
+    valueAccessor: ({ impact }) => impact.projects.people ?? 0,
+    buildSeries: buildCollectionSeries(
+      "projects",
+      "updatedDate",
+      (item) => item.peopleTrained ?? 0
+    ),
+  },
+  {
+    key: "transformationStories",
+    label: "Village Transformation Stories",
+    valueAccessor: ({ impact }) => impact.stories.count ?? 0,
+    buildSeries: buildCollectionSeries("stories", "updatedDate", () => 1),
   },
 ];
 
@@ -317,23 +409,6 @@ function HomePage() {
     return timestamp === null ? "—" : formatHumanDate(timestamp);
   };
 
-  const coverageStats = useMemo(
-    () => buildCoverageStats(scopedVillages ?? []),
-    [scopedVillages]
-  );
-
-  const coverageVillageCount = scopedVillages?.length ?? 0;
-  const coverageCountryCount = useMemo(() => {
-    const countriesSet = new Set();
-    (scopedVillages ?? []).forEach((village) => {
-      const name = village.__location?.country;
-      if (name) {
-        countriesSet.add(name);
-      }
-    });
-    return countriesSet.size;
-  }, [scopedVillages]);
-
   const impactStats = useMemo(
     () =>
       buildImpactStats(
@@ -358,30 +433,48 @@ function HomePage() {
     ]
   );
 
+  const coverageStats = useMemo(
+    () => buildCoverageStats(scopedVillages ?? []),
+    [scopedVillages]
+  );
+
   const rangeSummary = describeRange(effectiveRange);
-  const sliderDisabled = timeline.length <= 1;
-  const sliderFromLabel = formatTimelineLabel(sliderFromDate ?? minDate);
-  const sliderToLabel = formatTimelineLabel(sliderToDate ?? maxDate);
+  const isDateControlDisabled = timeline.length <= 1;
   const minTimelineLabel = formatTimelineLabel(
     timeline[0] ?? sliderFromDate ?? minDate
   );
   const maxTimelineLabel = formatTimelineLabel(
     timeline[timeline.length - 1] ?? sliderToDate ?? maxDate
   );
-  const selectionStartPct =
-    sliderMax === 0 ? 0 : (timelineSelection.from / sliderMax) * 100;
-  const selectionEndPct =
-    sliderMax === 0 ? 100 : (timelineSelection.to / sliderMax) * 100;
+  const findClosestTimelineIndex = (value) => {
+    if (!value || timeline.length === 0) return null;
+    const target = parseTimestamp(value);
+    if (target === null) return null;
+    let closestIndex = 0;
+    let smallestDiff = Math.abs(parseTimestamp(timeline[0]) - target);
+    for (let index = 1; index < timeline.length; index += 1) {
+      const diff = Math.abs(parseTimestamp(timeline[index]) - target);
+      if (diff < smallestDiff) {
+        smallestDiff = diff;
+        closestIndex = index;
+      }
+    }
+    return closestIndex;
+  };
 
-  const handleRangeChange = (type) => (event) => {
-    const value = Number(event.target.value);
+  const handleDateInputChange = (type) => (event) => {
+    const value = event.target.value;
+    const index = findClosestTimelineIndex(value);
+    if (index === null) {
+      return;
+    }
     setTimelineSelection((prev) => {
-      const next = { ...prev, [type]: value };
+      const next = { ...prev, [type]: index };
       if (next.from > next.to) {
         if (type === "from") {
-          next.to = value;
+          next.to = index;
         } else {
-          next.from = value;
+          next.from = index;
         }
       }
       return next;
@@ -445,35 +538,53 @@ function HomePage() {
     setGraphMetricKey(null);
   };
 
-  const coverageHighlights = [
-    {
-      label: "CHE Villages",
-      value: coverageStats.villages,
-      caption: "",
-    },
-    {
-      label: "Language Groups",
-      value: coverageStats.languages,
-      caption: "",
-    },
-    {
-      label: "People Groups",
-      value: coverageStats.peopleGroups,
-      caption: "",
-    },
-    {
-      label: "CHE Partners",
-      value: coverageStats.organizations,
-      caption: "",
-    },
-  ];
+  const showTrainingAddons = !scopeSubDistrict && !scopeVillage;
 
-  const movementMetrics = movementMetricDescriptors.map((descriptor) => ({
-    key: descriptor.key,
-    label: descriptor.label,
-    value: descriptor.valueAccessor(impactStats),
-    graphable: descriptor.graphable !== false,
-  }));
+  const extendedDescriptors = useMemo(() => {
+    if (!showTrainingAddons) return movementMetricDescriptors;
+    return [
+      ...movementMetricDescriptors,
+      {
+        key: "trainingCount",
+        label: "Trainings",
+        valueAccessor: ({ impact }) => impact.trainings.count ?? 0,
+        buildSeries: buildCollectionSeries("trainings", "updatedDate", () => 1),
+      },
+      {
+        key: "peopleTrained",
+        label: "People Trained",
+        valueAccessor: ({ impact }) => impact.trainings.people ?? 0,
+        buildSeries: buildCollectionSeries(
+          "trainings",
+          "updatedDate",
+          (item) => item.peopleTrained ?? 0
+        ),
+      },
+      {
+        key: "masterTrainers",
+        label: "CHE Master Trainers",
+        valueAccessor: ({ coverage }) => coverage.masterTrainers ?? 0,
+        buildSeries: buildCoverageSeries((stats) => stats.masterTrainers ?? 0),
+      },
+    ];
+  }, [showTrainingAddons]);
+
+  const movementMetrics = extendedDescriptors.map((descriptor) => {
+    const value = descriptor.valueAccessor({
+      impact: impactStats,
+      coverage: coverageStats,
+    });
+    const graphable =
+      descriptor.graphable !== false &&
+      typeof descriptor.buildSeries === "function";
+    return {
+      key: descriptor.key,
+      label: descriptor.label,
+      value,
+      graphable,
+      formatter: descriptor.formatter,
+    };
+  });
 
   const selectedGraphMetric = useMemo(
     () => movementMetricDescriptors.find((metric) => metric.key === graphMetricKey),
@@ -481,30 +592,33 @@ function HomePage() {
   );
 
   const graphSeries = useMemo(() => {
-    if (!selectedGraphMetric) return [];
+    if (!selectedGraphMetric || typeof selectedGraphMetric.buildSeries !== "function") {
+      return [];
+    }
     return selectedGraphMetric.buildSeries(locationAwareData, effectiveRange);
   }, [selectedGraphMetric, locationAwareData, effectiveRange]);
 
-  const trainingMetrics = [
-    { label: "No of trainings", value: impactStats.trainings.count },
-    { label: "No of places", value: impactStats.trainings.places },
-    { label: "No of people trained", value: impactStats.trainings.people },
-  ];
+  const dateFilteredCollections = useMemo(
+    () => filterCollectionsByDate(locationAwareData, effectiveRange),
+    [locationAwareData, effectiveRange]
+  );
 
-  const projectMetrics = [
-    { label: "No of projects", value: impactStats.projects.count },
-    { label: "No of places", value: impactStats.projects.places },
-    { label: "No of people reached", value: impactStats.projects.people },
-  ];
+  const filteredChurches = dateFilteredCollections.churches ?? [];
+  const filteredTrainings = dateFilteredCollections.trainings ?? [];
+  const filteredProjects = dateFilteredCollections.projects ?? [];
+  const filteredStories = dateFilteredCollections.stories ?? [];
 
-  const storyMetrics = [
-    { label: "No of stories", value: impactStats.stories.count },
-    { label: "No of people impacted", value: impactStats.stories.people },
-  ];
+  const filteredVillageReport = useMemo(
+    () =>
+      selectedVillageData
+        ? filterVillageReportData(selectedVillageData, effectiveRange)
+        : null,
+    [selectedVillageData, effectiveRange]
+  );
 
   return (
     <main className="container-fluid py-4 px-3 px-lg-5 home-screen">
-      <section className="app-card hero-card p-4 p-lg-5 mb-4 text-white position-relative overflow-hidden">
+      <section className="app-card hero-card home-hero mb-4 text-white position-relative overflow-hidden">
         <div className="hero-glow" aria-hidden />
         <div className="hero-minimal position-relative">
           <h1 className="display-4 fw-semibold mb-0">
@@ -513,17 +627,10 @@ function HomePage() {
         </div>
       </section>
 
-      <section className="app-card p-4 mb-4">
-        <div className="d-flex flex-column flex-xl-row justify-content-between gap-3 mb-4">
-          <div>
-           
-            <h2 className="section-heading mb-2">
-               Demographic Influence
-            </h2>
-          </div>
-          <div className="text-xl-end">
-            <div className="fw-semibold">{selectionTrail}</div>
-            <div className="text-muted small mb-2">{scopeSummary}</div>
+      <section className="app-card scope-card mb-4">
+        <div className="d-flex flex-column flex-xl-row justify-content-between gap-3 mb-2 align-items-start">
+          <div className="d-flex flex-wrap align-items-center gap-2">
+            <div className="fw-semibold mb-0">{selectionTrail}</div>
             <button
               type="button"
               className="btn btn-sm btn-outline-secondary"
@@ -532,6 +639,7 @@ function HomePage() {
               Reset scope
             </button>
           </div>
+          <div className="text-muted small text-xl-end">{scopeSummary}</div>
         </div>
         <div className="row g-3">
           <div className="col-12 col-md-6 col-xxl-2">
@@ -615,164 +723,100 @@ function HomePage() {
         </div>
       </section>
 
-      <section className="app-card p-4 mb-4">
-        <div className="d-flex flex-column flex-md-row justify-content-between align-items-start gap-3 mb-3">
-          <div>
-            <h2 className="section-heading mb-2">CHE Footprint</h2>
-          </div>
-          <div className="text-muted small">
-            {coverageVillageCount.toLocaleString()} villages ·{" "}
-            {coverageCountryCount.toLocaleString()} countries
-          </div>
-        </div>
-        <div className="row g-3">
-          {coverageHighlights.map((stat) => (
-            <div key={stat.label} className="col-6 col-lg-3">
-              <div className="stat-panel h-100">
-                <p className="muted-label mb-1">{stat.label}</p>
-                <p className="fs-2 fw-semibold mb-1">
-                  {formatNumber(stat.value)}
-                </p>
-                <p className="text-muted small mb-0">{stat.caption}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <div className="row g-4 mb-4 align-items-stretch">
-        <div className="col-12 col-xl-7 col-xxl-8">
+      <div className="row g-4 mb-4">
+        <div className="col-12">
           <section className="app-card p-4 h-100">
             <div className="d-flex flex-column flex-xl-row align-items-start gap-4 mb-4">
               <div className="flex-grow-1">
                 
                 <h2 className="section-heading mb-2"> Growth </h2>
               </div>
-              <div className="timeline-slider-panel w-100 w-xl-auto">
-                <div className="d-flex justify-content-between align-items-center gap-3 mb-3">
-                  <p className="muted-label text-uppercase small mb-0">
-                    Adjust Reporting Date
-                  </p>
-                  <span className="badge bg-white text-primary-emphasis">
-                    Latest update
-                  </span>
+              <div className="timeline-inline-controls w-100">
+                <div>
+                  <div className="timeline-range-heading mb-1">{rangeSummary.text}</div>
+                  <div className="timeline-panel-detail">{rangeSummary.detail}</div>
                 </div>
-                <div className="timeline-summary mb-3">
-                  <div className="fw-semibold text-dark">{rangeSummary.text}</div>
-                  <div className="text-muted small">{rangeSummary.detail}</div>
+                <div className="timeline-date-inputs">
+                  <div className="date-range-input">
+                    <p className="muted-label mb-1">From</p>
+                    <input
+                      type="date"
+                      value={sliderFromDate ?? ""}
+                      min={timeline[0] ?? ""}
+                      max={sliderToDate ?? timeline[timeline.length - 1] ?? ""}
+                      onChange={handleDateInputChange("from")}
+                      disabled={isDateControlDisabled}
+                    />
+                  </div>
+                  <div className="date-range-separator">→</div>
+                  <div className="date-range-input">
+                    <p className="muted-label mb-1">To</p>
+                    <input
+                      type="date"
+                      value={sliderToDate ?? ""}
+                      min={sliderFromDate ?? timeline[0] ?? ""}
+                      max={timeline[timeline.length - 1] ?? ""}
+                      onChange={handleDateInputChange("to")}
+                      disabled={isDateControlDisabled}
+                    />
+                  </div>
+                  
                 </div>
-                <div className="dual-range-shell">
-                  <div
-                    className="dual-range-progress"
-                    style={{
-                      left: `${selectionStartPct}%`,
-                      right: `${100 - selectionEndPct}%`,
-                    }}
-                  />
-                  <input
-                    type="range"
-                    className="dual-range"
-                    min={0}
-                    max={sliderMax}
-                    value={Math.min(timelineSelection.from, sliderMax)}
-                    onChange={handleRangeChange("from")}
-                    disabled={sliderDisabled}
-                  />
-                  <input
-                    type="range"
-                    className="dual-range dual-range--top"
-                    min={0}
-                    max={sliderMax}
-                    value={Math.min(timelineSelection.to, sliderMax)}
-                    onChange={handleRangeChange("to")}
-                    disabled={sliderDisabled}
-                  />
-                </div>
-                <div className="d-flex justify-content-between small text-muted mt-2">
-                  <span>{minTimelineLabel}</span>
-                  <span>{maxTimelineLabel}</span>
-                </div>
+               
               </div>
             </div>
-            <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xxl-5 g-3">
+            <div className="growth-metrics-grid">
               {movementMetrics.map((metric) => (
-                <div key={metric.label} className="col d-flex">
+                <div key={metric.key} className="growth-metric-item">
                   <div className="stat-panel accent w-100">
-                    <p className="muted-label mb-2">{metric.label}</p>
-                    <p className="fs-3 fw-semibold mb-2">
-                      {formatNumber(metric.value)}
+                    <div className="stat-panel-header mb-1">
+                      <p className="muted-label mb-0">{metric.label}</p>
+                      {metric.graphable && (
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-outline-primary btn-icon stat-panel-action"
+                          onClick={() => handleOpenGraph(metric.key)}
+                          aria-label={`View ${metric.label} chart`}
+                        >
+                          <svg
+                            viewBox="0 0 16 16"
+                            role="img"
+                            aria-hidden="true"
+                            focusable="false"
+                          >
+                            <path
+                              d="M2 13.5h12"
+                              stroke="currentColor"
+                              strokeWidth="1.5"
+                              strokeLinecap="round"
+                            />
+                            <path
+                              d="M4.5 10.5 7 6.5l2.5 2.5 2.5-4"
+                              stroke="currentColor"
+                              strokeWidth="1.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        </button>
+                      )}
+                    </div>
+                    <p className="fs-3 fw-semibold mb-0">
+                      {metric.formatter
+                        ? metric.formatter(metric.value)
+                        : formatNumber(metric.value)}
                     </p>
-                    {metric.graphable && (
-                      <button
-                        type="button"
-                        className="btn btn-sm btn-outline-primary mt-3"
-                        onClick={() => handleOpenGraph(metric.key)}
-                      >
-                        See graph
-                      </button>
-                    )}
                   </div>
                 </div>
               ))}
             </div>
           </section>
         </div>
-        <div className="col-12 col-xl-5 col-xxl-4 d-flex flex-column gap-4">
-          <div className="stat-panel accent">
-            <div className="d-flex justify-content-between align-items-center mb-3">
-              <div>
-                <p className="muted-label mb-1">Community impact</p>
-                <h3 className="h4 mb-0">Training & Projects</h3>
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-sm-6">
-                <h4 className="h6 text-muted text-uppercase mb-2">Training</h4>
-                {trainingMetrics.map((metric) => (
-                  <MetricRow
-                    key={metric.label}
-                    label={metric.label}
-                    value={metric.value}
-                  />
-                ))}
-              </div>
-              <div className="col-sm-6 mt-4 mt-sm-0">
-                <h4 className="h6 text-muted text-uppercase mb-2">Projects</h4>
-                {projectMetrics.map((metric) => (
-                  <MetricRow
-                    key={metric.label}
-                    label={metric.label}
-                    value={metric.value}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-          <div className="stat-panel dark">
-            <div className="d-flex justify-content-between align-items-center mb-3">
-              <div>
-                <p className="muted-label mb-1 text-white-50">
-                  Narratives of change
-                </p>
-                <h3 className="h4 text-white mb-0">Transformation stories</h3>
-              </div>
-              <span className="badge bg-light text-dark">Story</span>
-            </div>
-            {storyMetrics.map((metric) => (
-              <MetricRow
-                key={metric.label}
-                label={metric.label}
-                value={metric.value}
-                dark
-              />
-            ))}
-          </div>
-        </div>
       </div>
       {selectedVillageData && (
         <>
         
-          <VillageReport village={selectedVillageData} />
+          <VillageReport village={filteredVillageReport ?? selectedVillageData} />
         </>
       )}
       {!selectedVillageData && hasScopeSelection && (
@@ -780,12 +824,10 @@ function HomePage() {
           selectionSummary={scopeSummary}
           selectionTrail={selectionTrail}
           data={{
-            churches: scopedChurches ?? [],
-            growthStats: scopedGrowthStats ?? [],
-            trainings: scopedTrainings ?? [],
-            projects: scopedProjects ?? [],
-            stories: scopedStories ?? [],
-            villages: scopedVillages ?? [],
+            churches: filteredChurches,
+            trainings: filteredTrainings,
+            projects: filteredProjects,
+            stories: filteredStories,
           }}
         />
       )}
@@ -1455,28 +1497,6 @@ function normalizeCheDataset(countries = []) {
   };
 }
 
-function buildCoverageStats(villages = []) {
-  const languages = new Set();
-  const peopleGroups = new Set();
-  const organizations = new Set();
-
-  villages.forEach((village) => {
-    const info = village.cheVillageInformation ?? {};
-    info.languageSpoken?.forEach((language) => languages.add(language));
-    info.peopleGroups?.forEach((group) => peopleGroups.add(group));
-    if (info.cheOrganization) {
-      organizations.add(info.cheOrganization);
-    }
-  });
-
-  return {
-    villages: villages.length,
-    languages: languages.size,
-    peopleGroups: peopleGroups.size,
-    organizations: organizations.size,
-  };
-}
-
 function buildImpactStats(collections, range) {
   const filteredChurches = filterByDate(collections.churches, "updateDate", range);
   const filteredGrowth = filterByDate(
@@ -1516,6 +1536,10 @@ function buildImpactStats(collections, range) {
     (sum, church) => sum + (church.newCommitments ?? 0),
     0
   );
+  const totalChurchMembers = filteredChurches.reduce(
+    (sum, church) => sum + (church.membersCount ?? 0),
+    0
+  );
 
   const growthBuckets = filteredGrowth.reduce((acc, stat) => {
     const key = stat.growthCategory ?? "Unknown";
@@ -1534,6 +1558,7 @@ function buildImpactStats(collections, range) {
       churches: filteredChurches.length,
       commitments: totalCommitments,
       peopleTrained: trainingPeople,
+      churchMembers: totalChurchMembers,
       ches: growthBuckets["CHEs"] ?? 0,
       committeeMembers: growthBuckets["Committee Members"] ?? 0,
       committees: growthBuckets["Committees"] ?? 0,
@@ -1555,6 +1580,58 @@ function buildImpactStats(collections, range) {
       count: filteredStories.length,
       people: storyPeople,
     },
+  };
+}
+
+function buildCoverageStats(villages = []) {
+  const languages = new Set();
+  const organizations = new Set();
+  const unreachedGroups = new Set();
+  const workerPartners = new Set();
+  let povertySum = 0;
+  let povertyCount = 0;
+  let cheWorkers = 0;
+  let cheTrainedWorkers = 0;
+  let mvcWorkers = 0;
+  let masterTrainers = 0;
+
+  villages.forEach((village) => {
+    const info = village.cheVillageInformation ?? {};
+    info.languageSpoken?.forEach((language) => languages.add(language));
+    if (info.cheOrganization) {
+      organizations.add(info.cheOrganization);
+    }
+    info.unreachedPeopleGroupsAdopted?.forEach((group) => {
+      if (group) {
+        unreachedGroups.add(group);
+      }
+    });
+    info.cheWorkerPartnerOrganizations?.forEach((org) => {
+      if (org) {
+        workerPartners.add(org);
+      }
+    });
+    if (typeof info.povertyIndex === "number") {
+      povertySum += info.povertyIndex;
+      povertyCount += 1;
+    }
+    cheWorkers += info.cheWorkerCount ?? (info.cheWorkerName ? 1 : 0);
+    cheTrainedWorkers += info.cheTrainedWorkers ?? 0;
+    mvcWorkers += info.mvcAdoptedWorkers ?? 0;
+    masterTrainers += info.masterTrainers ?? 0;
+  });
+
+  return {
+    villages: villages.length,
+    organizations: organizations.size,
+    languages: languages.size,
+    unreachedPeopleGroups: unreachedGroups.size,
+    povertyIndex: povertyCount > 0 ? povertySum / povertyCount : null,
+    cheWorkers,
+    cheTrainedWorkers,
+    mvcWorkers,
+    workerPartnerOrganizations: workerPartners.size,
+    masterTrainers,
   };
 }
 
@@ -1610,6 +1687,33 @@ function filterByDate(items = [], dateField, range) {
     if (end !== null && value > end) return false;
     return true;
   });
+}
+
+function filterCollectionsByDate(collections = {}, range) {
+  return {
+    ...collections,
+    churches: filterByDate(collections.churches, "updateDate", range),
+    growthStats: filterByDate(collections.growthStats, "updatedDate", range),
+    trainings: filterByDate(collections.trainings, "updatedDate", range),
+    projects: filterByDate(collections.projects, "updatedDate", range),
+    stories: filterByDate(collections.stories, "updatedDate", range),
+  };
+}
+
+function filterVillageReportData(village, range) {
+  if (!village) return null;
+  return {
+    ...village,
+    churches: filterByDate(village.churches, "updateDate", range),
+    growthStatistics: filterByDate(village.growthStatistics, "updatedDate", range),
+    trainings: filterByDate(village.trainings, "updatedDate", range),
+    projects: filterByDate(village.projects, "updatedDate", range),
+    transformationStories: filterByDate(
+      village.transformationStories,
+      "updatedDate",
+      range
+    ),
+  };
 }
 
 const formatNumber = (value) => {
