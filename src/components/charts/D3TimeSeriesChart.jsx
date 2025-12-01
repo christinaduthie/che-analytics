@@ -1,7 +1,13 @@
 import { useEffect, useRef } from "react";
 import * as d3 from "d3";
 
-function D3TimeSeriesChart({ data = [], series = [], height = 320 }) {
+function D3TimeSeriesChart({
+  data = [],
+  series = [],
+  height = 320,
+  xAxisLabel = "",
+  yAxisLabel = "",
+}) {
   const svgRef = useRef(null);
   const tooltipRef = useRef(null);
 
@@ -54,6 +60,26 @@ function D3TimeSeriesChart({ data = [], series = [], height = 320 }) {
         .attr("font-size", "0.75rem");
 
       chartGroup.append("g").call(d3.axisLeft(y).ticks(5));
+
+      if (xAxisLabel) {
+        chartGroup
+          .append("text")
+          .attr("class", "axis-label")
+          .attr("x", chartWidth / 2)
+          .attr("y", chartHeight + margin.bottom - 5)
+          .attr("text-anchor", "middle")
+          .text(xAxisLabel);
+      }
+      if (yAxisLabel) {
+        chartGroup
+          .append("text")
+          .attr("class", "axis-label")
+          .attr("transform", "rotate(-90)")
+          .attr("x", -chartHeight / 2)
+          .attr("y", -margin.left + 15)
+          .attr("text-anchor", "middle")
+          .text(yAxisLabel);
+      }
 
       const lineGenerator = (serieKey) =>
         d3

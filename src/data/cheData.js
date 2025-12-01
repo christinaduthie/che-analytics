@@ -355,7 +355,8 @@ export const cheData = {
                             "storiesCategory": "General",
                             "place": "Central Hamlet",
                             "updatedDate": "2024-11-01",
-                            "peopleImpacted": 35,
+                            "storyTitle": "Hope Story",
+                            "peopleImpacted": 0,
                             "fileUpload": "https://example.org/uploads/stories/sunrise-general-story-01.pdf",
                             "description": "Overall village improvement in hygiene and community unity."
                           },
@@ -363,6 +364,7 @@ export const cheData = {
                             "storiesCategory": "Life",
                             "place": "South Street",
                             "updatedDate": "2024-11-18",
+                            "storyTitle": "Hope Story",
                             "peopleImpacted": 1,
                             "fileUpload": "https://example.org/uploads/stories/sunrise-life-story-ramesh.pdf",
                             "description": "Ramesh overcame alcoholism and started a small tailoring shop."
@@ -371,7 +373,8 @@ export const cheData = {
                             "storiesCategory": "Movement",
                             "place": "All Hamlets",
                             "updatedDate": "2024-12-05",
-                            "peopleImpacted": 120,
+                            "storyTitle": "Hope Story",
+                            "peopleImpacted": 0,
                             "fileUpload": "https://example.org/uploads/stories/sunrise-movement-story.pdf",
                             "description": "Village-wide cleaning drives led by youth groups every month."
                           },
@@ -379,7 +382,8 @@ export const cheData = {
                             "storiesCategory": "Village",
                             "place": "Sunrise Village",
                             "updatedDate": "2024-12-22",
-                            "peopleImpacted": 250,
+                            "storyTitle": "Hope Story",
+                            "peopleImpacted": 0,
                             "fileUpload": "https://example.org/uploads/stories/sunrise-village-story.pdf",
                             "description": "Shift from open defecation to nearly full toilet usage in two years."
                           },
@@ -387,7 +391,8 @@ export const cheData = {
                             "storiesCategory": "Movement",
                             "place": "West Ridge",
                             "updatedDate": "2025-11-21",
-                            "peopleImpacted": 68,
+                            "storyTitle": "Hope Story",
+                            "peopleImpacted": 0,
                             "fileUpload": "https://example.org/uploads/stories/sunrise-movement-nov2025.pdf",
                             "description": "November neighborhood care fair connected clinics, DBS launches, and project follow-ups."
                           }
@@ -459,8 +464,8 @@ export const cheData = {
                             "storiesCategory": "Life",
                             "place": "East Hamlet",
                             "updatedDate": "2024-10-25",
-                            "peopleImpacted": 4,
-                            "fileUpload": "https://example.org/uploads/stories/greenfield-life-family.pdf",
+                            "storyTitle": "Hope Story",
+                                                        "fileUpload": "https://example.org/uploads/stories/greenfield-life-family.pdf",
                             "description": "Family reconciled after financial counseling and support."
                           }
                         ]
@@ -583,16 +588,16 @@ export const cheData = {
                             "storiesCategory": "Movement",
                             "place": "Evergreen Colony",
                             "updatedDate": "2023-12-29",
-                            "peopleImpacted": 54,
-                            "fileUpload": "https://example.org/uploads/stories/evergreen-movement.pdf",
+                            "storyTitle": "Hope Story",
+                                                        "fileUpload": "https://example.org/uploads/stories/evergreen-movement.pdf",
                             "description": "Volunteer-run shuttle taking seniors to clinics."
                           },
                           {
                             "storiesCategory": "Life",
                             "place": "Sector 7",
                             "updatedDate": "2024-05-21",
-                            "peopleImpacted": 4,
-                            "fileUpload": "https://example.org/uploads/stories/evergreen-life.pdf",
+                            "storyTitle": "Hope Story",
+                                                        "fileUpload": "https://example.org/uploads/stories/evergreen-life.pdf",
                             "description": "Youth overcame addictions after CHE mentoring."
                           }
                         ]
@@ -695,8 +700,8 @@ export const cheData = {
                             "storiesCategory": "Village",
                             "place": "Riverstone Hamlet",
                             "updatedDate": "2023-11-08",
-                            "peopleImpacted": 33,
-                            "fileUpload": "https://example.org/uploads/stories/riverstone-village.pdf",
+                            "storyTitle": "Hope Story",
+                                                        "fileUpload": "https://example.org/uploads/stories/riverstone-village.pdf",
                             "description": "Milk cooperative stabilized incomes for marginal farmers."
                           }
                         ]
@@ -1256,8 +1261,8 @@ export const cheData = {
                             "storiesCategory": "Movement",
                             "place": "Joy Estate",
                             "updatedDate": "2024-12-18",
-                            "peopleImpacted": 90,
-                            "fileUpload": "https://example.org/uploads/stories/joy-estate-movement.pdf",
+                            "storyTitle": "Hope Story",
+                                                        "fileUpload": "https://example.org/uploads/stories/joy-estate-movement.pdf",
                             "description": "Multiple building clusters starting weekly community prayer and cleanup."
                           }
                         ]
@@ -1370,8 +1375,8 @@ export const cheData = {
                             "storiesCategory": "Village",
                             "place": "Harvest Valley",
                             "updatedDate": "2025-01-30",
-                            "peopleImpacted": 65,
-                            "fileUpload": "https://example.org/uploads/stories/harvest-valley-story.pdf",
+                            "storyTitle": "Hope Story",
+                                                        "fileUpload": "https://example.org/uploads/stories/harvest-valley-story.pdf",
                             "description": "Collective savings groups financing backyard gardening kits."
                           }
                         ]
@@ -1447,8 +1452,8 @@ export const cheData = {
                             "storiesCategory": "Movement",
                             "place": "Riverbend Barangay",
                             "updatedDate": "2025-02-06",
-                            "peopleImpacted": 58,
-                            "fileUpload": "https://example.org/uploads/stories/riverbend-movement.pdf",
+                            "storyTitle": "Hope Story",
+                                                        "fileUpload": "https://example.org/uploads/stories/riverbend-movement.pdf",
                             "description": "Cooperatives championing waste segregation and recycling points."
                           }
                         ]
@@ -1577,8 +1582,8 @@ export const cheData = {
                             "storiesCategory": "Village",
                             "place": "Hope Springs",
                             "updatedDate": "2024-09-30",
-                            "peopleImpacted": 48,
-                            "fileUpload": "https://example.org/uploads/stories/hope-springs-village.pdf",
+                            "storyTitle": "Hope Story",
+                                                        "fileUpload": "https://example.org/uploads/stories/hope-springs-village.pdf",
                             "description": "Savings group helped 12 families build rainwater tanks."
                           }
                         ]
@@ -1697,16 +1702,16 @@ export const cheData = {
                             "storiesCategory": "Life",
                             "place": "River Valley",
                             "updatedDate": "2023-01-09",
-                            "peopleImpacted": 6,
-                            "fileUpload": "https://example.org/uploads/stories/river-valley-life.pdf",
+                            "storyTitle": "Hope Story",
+                                                        "fileUpload": "https://example.org/uploads/stories/river-valley-life.pdf",
                             "description": "Savings group funded a mother’s tailoring shop."
                           },
                           {
                             "storiesCategory": "Movement",
                             "place": "River Valley Estates",
                             "updatedDate": "2024-08-21",
-                            "peopleImpacted": 41,
-                            "fileUpload": "https://example.org/uploads/stories/river-valley-movement.pdf",
+                            "storyTitle": "Hope Story",
+                                                        "fileUpload": "https://example.org/uploads/stories/river-valley-movement.pdf",
                             "description": "Neighborhood clean-up sparked joint DBS between clans."
                           }
                         ]
@@ -1813,8 +1818,8 @@ export const cheData = {
                             "storiesCategory": "Movement",
                             "place": "Starlight Parish",
                             "updatedDate": "2024-11-09",
-                            "peopleImpacted": 58,
-                            "fileUpload": "https://example.org/uploads/stories/starlight-movement.pdf",
+                            "storyTitle": "Hope Story",
+                                                        "fileUpload": "https://example.org/uploads/stories/starlight-movement.pdf",
                             "description": "Women advocacy forum influenced subcounty sanitation by-laws."
                           }
                         ]
@@ -1938,8 +1943,8 @@ export const cheData = {
                             "storiesCategory": "Movement",
                             "place": "Soure",
                             "updatedDate": "2024-10-19",
-                            "peopleImpacted": 44,
-                            "fileUpload": "https://example.org/uploads/stories/brazil-soure-coops.pdf",
+                            "storyTitle": "Hope Story",
+                                                        "fileUpload": "https://example.org/uploads/stories/brazil-soure-coops.pdf",
                             "description": "Fisher guild adopted CHE sanitation pledges."
                           }
                         ]
@@ -2025,8 +2030,8 @@ export const cheData = {
                             "storiesCategory": "Village",
                             "place": "Bosque Esperança",
                             "updatedDate": "2024-11-02",
-                            "peopleImpacted": 19,
-                            "fileUpload": "https://example.org/uploads/stories/brazil-bosque-story.pdf",
+                            "storyTitle": "Hope Story",
+                                                        "fileUpload": "https://example.org/uploads/stories/brazil-bosque-story.pdf",
                             "description": "Women’s canoe patrol reduced river dumping."
                           }
                         ]
@@ -2112,8 +2117,8 @@ export const cheData = {
                             "storiesCategory": "Movement",
                             "place": "Vale Clara",
                             "updatedDate": "2025-01-09",
-                            "peopleImpacted": 36,
-                            "fileUpload": "https://example.org/uploads/stories/brazil-valeclara.pdf",
+                            "storyTitle": "Hope Story",
+                                                        "fileUpload": "https://example.org/uploads/stories/brazil-valeclara.pdf",
                             "description": "Tour guides adopt CHE hospitality lessons."
                           }
                         ]
@@ -2213,8 +2218,8 @@ export const cheData = {
                             "storiesCategory": "Life",
                             "place": "Monte Luz",
                             "updatedDate": "2024-09-15",
-                            "peopleImpacted": 27,
-                            "fileUpload": "https://example.org/uploads/stories/mexico-monteluz.pdf",
+                            "storyTitle": "Hope Story",
+                                                        "fileUpload": "https://example.org/uploads/stories/mexico-monteluz.pdf",
                             "description": "Mountain runners deliver medicines weekly."
                           }
                         ]
@@ -2300,8 +2305,8 @@ export const cheData = {
                             "storiesCategory": "Movement",
                             "place": "Sendero Claro",
                             "updatedDate": "2024-12-22",
-                            "peopleImpacted": 31,
-                            "fileUpload": "https://example.org/uploads/stories/mexico-sendero.pdf",
+                            "storyTitle": "Hope Story",
+                                                        "fileUpload": "https://example.org/uploads/stories/mexico-sendero.pdf",
                             "description": "CHE youth revived community radio for alerts."
                           }
                         ]
@@ -2401,8 +2406,8 @@ export const cheData = {
                             "storiesCategory": "Village",
                             "place": "Kafe Hill",
                             "updatedDate": "2024-11-14",
-                            "peopleImpacted": 23,
-                            "fileUpload": "https://example.org/uploads/stories/png-kafehill.pdf",
+                            "storyTitle": "Hope Story",
+                                                        "fileUpload": "https://example.org/uploads/stories/png-kafehill.pdf",
                             "description": "Mothers savings club funded clinic lighting."
                           }
                         ]
@@ -2496,8 +2501,8 @@ export const cheData = {
                             "storiesCategory": "Movement",
                             "place": "Korona Reef",
                             "updatedDate": "2024-12-04",
-                            "peopleImpacted": 28,
-                            "fileUpload": "https://example.org/uploads/stories/png-korona.pdf",
+                            "storyTitle": "Hope Story",
+                                                        "fileUpload": "https://example.org/uploads/stories/png-korona.pdf",
                             "description": "Reef cleanups birthed a district waste policy."
                           }
                         ]
@@ -2590,8 +2595,8 @@ export const cheData = {
                             "storiesCategory": "Movement",
                             "place": "Puerta del Sol",
                             "updatedDate": "2024-10-05",
-                            "peopleImpacted": 22,
-                            "fileUpload": "https://example.org/uploads/stories/argentina-altiplano.pdf",
+                            "storyTitle": "Hope Story",
+                                                        "fileUpload": "https://example.org/uploads/stories/argentina-altiplano.pdf",
                             "description": "Mothers tea circles birthed mobile tutoring pods."
                           }
                         ]
@@ -2683,8 +2688,8 @@ export const cheData = {
                             "storiesCategory": "Life",
                             "place": "Gaida Gaun",
                             "updatedDate": "2024-11-15",
-                            "peopleImpacted": 29,
-                            "fileUpload": "https://example.org/uploads/stories/nepal-gaida.pdf",
+                            "storyTitle": "Hope Story",
+                                                        "fileUpload": "https://example.org/uploads/stories/nepal-gaida.pdf",
                             "description": "Youth trekking guides fund meds for elders."
                           }
                         ]
@@ -2776,8 +2781,8 @@ export const cheData = {
                             "storiesCategory": "Movement",
                             "place": "Foase Junction",
                             "updatedDate": "2025-01-05",
-                            "peopleImpacted": 47,
-                            "fileUpload": "https://example.org/uploads/stories/ghana-foase.pdf",
+                            "storyTitle": "Hope Story",
+                                                        "fileUpload": "https://example.org/uploads/stories/ghana-foase.pdf",
                             "description": "Apprentice savings clubs fund clinics on wheels."
                           }
                         ]
@@ -2869,8 +2874,8 @@ export const cheData = {
                             "storiesCategory": "Life",
                             "place": "Desert Bloom",
                             "updatedDate": "2025-01-02",
-                            "peopleImpacted": 38,
-                            "fileUpload": "https://example.org/uploads/stories/usa-desert-bloom.pdf",
+                            "storyTitle": "Hope Story",
+                                                        "fileUpload": "https://example.org/uploads/stories/usa-desert-bloom.pdf",
                             "description": "Makerspace apprentices built cooling pods for elders."
                           }
                         ]
@@ -3002,16 +3007,16 @@ export const cheData = {
                             "storiesCategory": "Village",
                             "place": "Birke Guda",
                             "updatedDate": "2024-12-18",
-                            "peopleImpacted": 58,
-                            "fileUpload": "https://example.org/uploads/stories/ethiopia-birke.pdf",
+                            "storyTitle": "Hope Story",
+                                                        "fileUpload": "https://example.org/uploads/stories/ethiopia-birke.pdf",
                             "description": "Youth tree nurseries halted soil loss."
                           },
                           {
                             "storiesCategory": "Movement",
                             "place": "Dodola Highlands",
                             "updatedDate": "2025-01-13",
-                            "peopleImpacted": 73,
-                            "fileUpload": "https://example.org/uploads/stories/ethiopia-dodola.pdf",
+                            "storyTitle": "Hope Story",
+                                                        "fileUpload": "https://example.org/uploads/stories/ethiopia-dodola.pdf",
                             "description": "Prayer walks linked 11 herder camps."
                           }
                         ]
@@ -3098,8 +3103,8 @@ export const cheData = {
                             "storiesCategory": "Life",
                             "place": "Abune Valley",
                             "updatedDate": "2024-12-07",
-                            "peopleImpacted": 18,
-                            "fileUpload": "https://example.org/uploads/stories/ethiopia-abune.pdf",
+                            "storyTitle": "Hope Story",
+                                                        "fileUpload": "https://example.org/uploads/stories/ethiopia-abune.pdf",
                             "description": "Women savings built a grain bank for drought months."
                           }
                         ]
@@ -3218,8 +3223,8 @@ export const cheData = {
                             "storiesCategory": "Movement",
                             "place": "Teluk Sinar",
                             "updatedDate": "2025-01-10",
-                            "peopleImpacted": 41,
-                            "fileUpload": "https://example.org/uploads/stories/indonesia-teluk.pdf",
+                            "storyTitle": "Hope Story",
+                                                        "fileUpload": "https://example.org/uploads/stories/indonesia-teluk.pdf",
                             "description": "Prayer walks reconciled rival fishing families."
                           }
                         ]
@@ -3313,8 +3318,8 @@ export const cheData = {
                             "storiesCategory": "Life",
                             "place": "Kampung Tunas",
                             "updatedDate": "2025-01-06",
-                            "peopleImpacted": 33,
-                            "fileUpload": "https://example.org/uploads/stories/indonesia-tunas.pdf",
+                            "storyTitle": "Hope Story",
+                                                        "fileUpload": "https://example.org/uploads/stories/indonesia-tunas.pdf",
                             "description": "Teens revived reading clubs after CHE literacy sprints."
                           }
                         ]
@@ -3422,8 +3427,8 @@ export const cheData = {
                             "storiesCategory": "Movement",
                             "place": "Selva Dorada",
                             "updatedDate": "2024-12-24",
-                            "peopleImpacted": 44,
-                            "fileUpload": "https://example.org/uploads/stories/peru-selva.pdf",
+                            "storyTitle": "Hope Story",
+                                                        "fileUpload": "https://example.org/uploads/stories/peru-selva.pdf",
                             "description": "River patrols turned into DBS prayer circuits."
                           }
                         ]
@@ -3517,8 +3522,8 @@ export const cheData = {
                             "storiesCategory": "Village",
                             "place": "Altiplano Luz",
                             "updatedDate": "2025-01-14",
-                            "peopleImpacted": 39,
-                            "fileUpload": "https://example.org/uploads/stories/peru-altiplano.pdf",
+                            "storyTitle": "Hope Story",
+                                                        "fileUpload": "https://example.org/uploads/stories/peru-altiplano.pdf",
                             "description": "Women wool guild funds scholarships for girls."
                           }
                         ]

@@ -1,7 +1,16 @@
 import { useEffect, useRef } from "react";
 import * as d3 from "d3";
 
-function D3BarChart({ data = [], xKey, yKey, height = 320, barColor = "#0d6efd", series }) {
+function D3BarChart({
+  data = [],
+  xKey,
+  yKey,
+  height = 320,
+  barColor = "#0d6efd",
+  series,
+  xAxisLabel = "",
+  yAxisLabel = "",
+}) {
   const svgRef = useRef(null);
 
   useEffect(() => {
@@ -65,6 +74,27 @@ function D3BarChart({ data = [], xKey, yKey, height = 320, barColor = "#0d6efd",
         .attr("transform", "rotate(-25)");
 
       chartGroup.append("g").call(d3.axisLeft(y).ticks(5));
+
+      if (xAxisLabel) {
+        chartGroup
+          .append("text")
+          .attr("class", "axis-label")
+          .attr("x", chartWidth / 2)
+          .attr("y", chartHeight + margin.bottom - 5)
+          .attr("text-anchor", "middle")
+          .text(xAxisLabel);
+      }
+
+      if (yAxisLabel) {
+        chartGroup
+          .append("text")
+          .attr("class", "axis-label")
+          .attr("transform", `rotate(-90)`)
+          .attr("x", -chartHeight / 2)
+          .attr("y", -margin.left + 15)
+          .attr("text-anchor", "middle")
+          .text(yAxisLabel);
+      }
 
       const barGroups = chartGroup
         .selectAll(".bar-group")

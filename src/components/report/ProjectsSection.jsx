@@ -216,7 +216,7 @@ function ProjectsSection({ projects = [] }) {
         <div className="chart-container mt-4">
           <div className="d-flex flex-column flex-lg-row justify-content-between align-items-start gap-3 mb-3">
             <div>
-              <h4 className="section-heading mb-1">Projects/Initiatives Impact Chart</h4>
+              <h4 className="section-heading mb-1">Projects / Initiatives Impact Chart</h4>
               <p className="text-muted mb-0">Compare reach across time or by initiative.</p>
             </div>
             <div className="chart-toolbar">
@@ -238,9 +238,18 @@ function ProjectsSection({ projects = [] }) {
             <D3TimeSeriesChart
               data={timelineData}
               series={[{ key: "peopleTrained", color: "#a855f7", label: "People reached" }]}
+              xAxisLabel="Time"
+              yAxisLabel="Count"
             />
           ) : (
-            <D3BarChart data={categoryChartData} xKey="name" yKey="value" barColor="#a855f7" />
+            <D3BarChart
+              data={categoryChartData}
+              xKey="name"
+              yKey="value"
+              barColor="#a855f7"
+              xAxisLabel="Project Category"
+              yAxisLabel="Count"
+            />
           )}
         </div>
       )}

@@ -219,7 +219,7 @@ function TrainingsSection({ trainings = [] }) {
           <div className="d-flex flex-column flex-lg-row justify-content-between align-items-start gap-3 mb-3">
             <div>
               <h4 className="section-heading mb-1">Training Growth Chart</h4>
-            
+          
             </div>
             <div className="chart-toolbar">
               <div className="view-toggle">
@@ -240,9 +240,18 @@ function TrainingsSection({ trainings = [] }) {
             <D3TimeSeriesChart
               data={timelineData}
               series={[{ key: "peopleTrained", color: "#f97316", label: "People trained" }]}
+              xAxisLabel="Time"
+              yAxisLabel="Count"
             />
           ) : (
-            <D3BarChart data={categoryChartData} xKey="name" yKey="value" barColor="#f97316" />
+            <D3BarChart
+              data={categoryChartData}
+              xKey="name"
+              yKey="value"
+              barColor="#f97316"
+              xAxisLabel="Training Category"
+              yAxisLabel="Count"
+            />
           )}
         </div>
       )}

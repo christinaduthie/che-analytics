@@ -863,7 +863,7 @@ function HomePage() {
         </div>
       </div>
       <div className="mb-3">
-        <h2 className="section-heading mb-0">Periodic Reports/Stories</h2>
+        <h2 className="section-heading mb-0">Periodic Reports / Stories</h2>
       </div>
       {organizationFilteredVillage && (
         <VillageReport

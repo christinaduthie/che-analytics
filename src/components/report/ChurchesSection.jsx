@@ -263,6 +263,8 @@ function ChurchesSection({ churches = [] }) {
                 { key: "newCommitments", color: "#16a34a", label: "New commitments" },
                 { key: "leftFaith", color: "#f43f5e", label: "Left faith" },
               ]}
+              xAxisLabel="Time"
+              yAxisLabel="Count"
             />
           ) : (
             <D3BarChart
@@ -272,6 +274,8 @@ function ChurchesSection({ churches = [] }) {
                 { key: "newCommitments", color: "#16a34a" },
                 { key: "leftFaith", color: "#f43f5e" },
               ]}
+              xAxisLabel="Church Names"
+              yAxisLabel="Count"
             />
           )}
         </div>

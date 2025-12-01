@@ -100,7 +100,7 @@ function StoriesSection({ transformationStories = [] }) {
   const handleDownloadPdf = () => {
     if (!hasSelection) return;
     downloadTablePdf({
-      title: "Transformation-Stories",
+      title: "Transformation Stories",
       columns: ["Category", "Place", "Updated", "People impacted"],
       rows: selectedStories.map((s) => [
         s.storiesCategory ?? "",
@@ -147,6 +147,7 @@ function StoriesSection({ transformationStories = [] }) {
               <th>Stories category</th>
               <th>Place</th>
               <th>Updated Date</th>
+              <th>Title</th>
               <th>Photos</th>
               <th>Stories</th>
             </tr>
@@ -168,6 +169,7 @@ function StoriesSection({ transformationStories = [] }) {
                   <td className="fw-semibold">{s.storiesCategory}</td>
                   <td>{s.place}</td>
                   <td>{s.updatedDate}</td>
+                  <td>{s.storyTitle ?? "Untitled Story"}</td>
                   <td className="text-center">
                     <button type="button" className="btn btn-sm btn-outline-secondary" title="View uploaded file">
                       <img src={fileIcon} alt="file" className="file-icon" />
