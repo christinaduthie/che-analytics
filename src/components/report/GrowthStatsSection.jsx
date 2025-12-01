@@ -168,13 +168,4 @@ function GrowthStatsSection({ growthStatistics = [], population = 0 }) {
   );
 }
 
-function SummaryStat({ label, value }) {
-  return (
-    <div className="border rounded-3 p-3 bg-light text-center">
-      <p className="text-uppercase small text-muted mb-1">{label}</p>
-      <p className="fs-5 fw-semibold mb-0">{value}</p>
-    </div>
-  );
-}
-
 export default GrowthStatsSection;

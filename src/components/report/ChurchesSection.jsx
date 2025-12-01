@@ -221,15 +221,4 @@ function ChurchesSection({ churches = [] }) {
   );
 }
 
-function MiniStat({ label, value }) {
-  const formattedValue =
-    typeof value === "number" ? value.toLocaleString() : value;
-  return (
-    <div className="border rounded-3 p-3 bg-light text-center">
-      <p className="text-uppercase small text-muted mb-1">{label}</p>
-      <p className="fs-4 fw-semibold mb-0">{formattedValue}</p>
-    </div>
-  );
-}
-
 export default ChurchesSection;
