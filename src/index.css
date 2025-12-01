@@ -402,7 +402,7 @@
 
   .growth-metrics-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 0.75rem;
   }
 
@@ -410,9 +410,57 @@
     display: flex;
   }
 
+  .growth-metric-item .stat-panel {
+    padding: 0.25rem 0.35rem;
+    min-height: 44px;
+    gap: 0.05rem;
+  }
+
+  .growth-metric-item .stat-panel-header {
+    align-items: center;
+    gap: 0.2rem;
+  }
+
+  .growth-metric-item .stat-panel .muted-label {
+    font-size: 0.65rem;
+  }
+
+  .growth-metric-item .stat-panel .fs-3 {
+    font-size: 0.9rem !important;
+  }
+
+  .graph-button {
+    width: 1.4rem;
+    height: 1.4rem;
+    border: none;
+    border-radius: 0.35rem;
+    background: linear-gradient(135deg, #eef2ff, #dbeafe);
+    color: #1d4ed8;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    font-size: 0;
+    line-height: 1;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.08);
+    transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .graph-button:hover,
+  .graph-button:focus-visible {
+    background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.15);
+  }
+
+  .graph-button svg {
+    width: 0.85rem;
+    height: 0.85rem;
+  }
+
   @media (min-width: 1200px) {
     .growth-metrics-grid {
-      grid-template-columns: repeat(7, minmax(0, 1fr));
+      grid-template-columns: repeat(6, minmax(0, 1fr));
     }
   }
 
@@ -488,6 +536,19 @@
     font-size: 0.72rem;
     color: #64748b;
     font-weight: 600;
+  }
+
+  .map-card {
+    min-height: 320px;
+    background: #0f172a;
+    display: flex;
+  }
+
+  .map-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
 
   .dual-range-shell {

@@ -45,12 +45,7 @@ function VillageReport({ village }) {
               Village dossier · Population {info.population.toLocaleString()}
             </div>
             <h1 className="display-6 text-white mb-3">{info.cheVillageName}</h1>
-            <p className="text-white-50 mb-4">
-              A living snapshot of churches, trainings, projects, and transformation stories curated
-              by CHE workers on the ground.
-            </p>
             <div className="d-flex flex-wrap gap-2">
-              <span className="hero-chip">{workerShortName} on duty</span>
               <span className="hero-chip">{info.languageSpoken.length} languages</span>
               <span className="hero-chip">{info.peopleGroups.length} people groups</span>
             </div>
@@ -62,7 +57,6 @@ function VillageReport({ village }) {
               <p className="text-white-50 mb-3">{info.cheWorkerOrganization}</p>
               <div className="worker-meta">
                 <MetricBadge label="CHE Organization" value={info.cheOrganization} />
-                <MetricBadge label="Poverty index" value={info.povertyIndex} />
               </div>
             </div>
           </div>

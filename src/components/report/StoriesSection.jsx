@@ -1,5 +1,5 @@
 // src/components/report/StoriesSection.jsx
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import fileIcon from "../../assets/file-icon.png";
 import D3BarChart from "../charts/D3BarChart";
 import D3TimeSeriesChart from "../charts/D3TimeSeriesChart";
@@ -11,9 +11,12 @@ import {
 } from "../../utils/chartUtils";
 import { downloadTablePdf } from "../../utils/pdfUtils";
 
+const PAGE_SIZE = 10;
+
 function StoriesSection({ transformationStories = [] }) {
   const [selectedYear, setSelectedYear] = useState("all");
   const [chartView, setChartView] = useState("timeline");
+  const [page, setPage] = useState(1);
 
   const yearOptions = useMemo(
     () => buildYearOptions(transformationStories, "updatedDate"),
@@ -26,6 +29,17 @@ function StoriesSection({ transformationStories = [] }) {
   );
 
   const filteredStories = yearFilteredStories;
+  const paginatedStories = useMemo(() => {
+    const start = (page - 1) * PAGE_SIZE;
+    return filteredStories.slice(start, start + PAGE_SIZE);
+  }, [filteredStories, page]);
+  const totalPages = Math.max(1, Math.ceil(filteredStories.length / PAGE_SIZE));
+  const handlePageChange = (next) => {
+    setPage(Math.min(Math.max(1, next), totalPages));
+  };
+  useEffect(() => {
+    setPage(1);
+  }, [filteredStories]);
 
   const totalImpacted = useMemo(
     () => filteredStories.reduce((sum, story) => sum + story.peopleImpacted, 0),
@@ -73,25 +87,7 @@ function StoriesSection({ transformationStories = [] }) {
           Download PDF
         </button>
       </div>
-      <div className="d-flex justify-content-between align-items-center mb-2 chart-toolbar">
-        <span className="text-muted small">
-          {selectedYear === "all" ? "Showing all years" : `Filtered to ${selectedYear}`}
-        </span>
-        {yearOptions.length > 0 && (
-          <select
-            className="form-select form-select-sm w-auto"
-            value={selectedYear}
-            onChange={(event) => setSelectedYear(event.target.value)}
-          >
-            <option value="all">All years</option>
-            {yearOptions.map((year) => (
-              <option key={year} value={year}>
-                {year}
-              </option>
-            ))}
-          </select>
-        )}
-      </div>
+
       <div className="table-scroll">
         <table className="table table-striped align-middle">
           <thead>
@@ -105,7 +101,7 @@ function StoriesSection({ transformationStories = [] }) {
             </tr>
           </thead>
           <tbody>
-            {filteredStories.map((s, idx) => (
+            {paginatedStories.map((s, idx) => (
               <tr key={s.storiesCategory + idx}>
                 <td className="fw-semibold">{s.storiesCategory}</td>
                 <td>{s.place}</td>
@@ -129,6 +125,29 @@ function StoriesSection({ transformationStories = [] }) {
           </tbody>
         </table>
       </div>
+      {filteredStories.length > PAGE_SIZE && (
+        <div className="pagination-controls">
+          <button
+            type="button"
+            className="btn btn-sm btn-outline-secondary"
+            onClick={() => handlePageChange(page - 1)}
+            disabled={page === 1}
+          >
+            Prev
+          </button>
+          <span className="text-muted small">
+            Page {page} of {totalPages}
+          </span>
+          <button
+            type="button"
+            className="btn btn-sm btn-outline-secondary"
+            onClick={() => handlePageChange(page + 1)}
+            disabled={page === totalPages}
+          >
+            Next
+          </button>
+        </div>
+      )}
       {filteredStories.length > 0 && (
         <div className="chart-container mt-4">
           <div className="d-flex flex-column flex-lg-row justify-content-between align-items-start gap-3 mb-3">

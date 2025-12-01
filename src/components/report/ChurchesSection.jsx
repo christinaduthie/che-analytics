@@ -1,5 +1,5 @@
 // src/components/report/ChurchesSection.jsx
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import fileIcon from "../../assets/file-icon.png";
 import D3BarChart from "../charts/D3BarChart";
 import D3TimeSeriesChart from "../charts/D3TimeSeriesChart";
@@ -10,9 +10,12 @@ import {
 } from "../../utils/chartUtils";
 import { downloadTablePdf } from "../../utils/pdfUtils";
 
+const PAGE_SIZE = 10;
+
 function ChurchesSection({ churches = [] }) {
   const [selectedYear, setSelectedYear] = useState("all");
   const [chartView, setChartView] = useState("timeline");
+  const [page, setPage] = useState(1);
 
   const yearOptions = useMemo(
     () => buildYearOptions(churches, "updateDate"),
@@ -25,6 +28,17 @@ function ChurchesSection({ churches = [] }) {
   );
 
   const filteredChurches = yearFilteredChurches;
+  const paginatedChurches = useMemo(() => {
+    const start = (page - 1) * PAGE_SIZE;
+    return filteredChurches.slice(start, start + PAGE_SIZE);
+  }, [filteredChurches, page]);
+  const totalPages = Math.max(1, Math.ceil(filteredChurches.length / PAGE_SIZE));
+  const handlePageChange = (next) => {
+    setPage(Math.min(Math.max(1, next), totalPages));
+  };
+  useEffect(() => {
+    setPage(1);
+  }, [filteredChurches]);
 
   const chartData = useMemo(
     () =>
@@ -94,25 +108,7 @@ function ChurchesSection({ churches = [] }) {
           Download PDF
         </button>
       </div>
-      <div className="d-flex justify-content-between align-items-center mb-2 chart-toolbar">
-        <span className="text-muted small">
-          {selectedYear === "all" ? "Showing all years" : `Filtered to ${selectedYear}`}
-        </span>
-        {yearOptions.length > 0 && (
-          <select
-            className="form-select form-select-sm w-auto"
-            value={selectedYear}
-            onChange={(event) => setSelectedYear(event.target.value)}
-          >
-            <option value="all">All years</option>
-            {yearOptions.map((year) => (
-              <option key={year} value={year}>
-                {year}
-              </option>
-            ))}
-          </select>
-        )}
-      </div>
+    
       <div className="table-scroll">
         <table className="table table-striped align-middle">
           <thead>
@@ -128,7 +124,7 @@ function ChurchesSection({ churches = [] }) {
             </tr>
           </thead>
           <tbody>
-            {filteredChurches.map((c, idx) => (
+            {paginatedChurches.map((c, idx) => (
               <tr key={c.churchName + idx}>
                 <td className="fw-semibold">{c.churchName}</td>
                 <td>{c.place}</td>
@@ -154,6 +150,29 @@ function ChurchesSection({ churches = [] }) {
           </tbody>
         </table>
       </div>
+      {filteredChurches.length > PAGE_SIZE && (
+        <div className="pagination-controls">
+          <button
+            type="button"
+            className="btn btn-sm btn-outline-secondary"
+            onClick={() => handlePageChange(page - 1)}
+            disabled={page === 1}
+          >
+            Prev
+          </button>
+          <span className="text-muted small">
+            Page {page} of {totalPages}
+          </span>
+          <button
+            type="button"
+            className="btn btn-sm btn-outline-secondary"
+            onClick={() => handlePageChange(page + 1)}
+            disabled={page === totalPages}
+          >
+            Next
+          </button>
+        </div>
+      )}
       {filteredChurches.length > 0 && (
         <div className="chart-container mt-4">
           <div className="d-flex flex-column flex-lg-row justify-content-between align-items-start gap-3 mb-3">

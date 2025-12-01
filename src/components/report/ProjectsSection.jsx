@@ -1,5 +1,5 @@
 // src/components/report/ProjectsSection.jsx
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import fileIcon from "../../assets/file-icon.png";
 import D3BarChart from "../charts/D3BarChart";
 import D3TimeSeriesChart from "../charts/D3TimeSeriesChart";
@@ -11,9 +11,12 @@ import {
 } from "../../utils/chartUtils";
 import { downloadTablePdf } from "../../utils/pdfUtils";
 
+const PAGE_SIZE = 10;
+
 function ProjectsSection({ projects = [] }) {
   const [selectedYear, setSelectedYear] = useState("all");
   const [chartView, setChartView] = useState("timeline");
+  const [page, setPage] = useState(1);
 
   const yearOptions = useMemo(
     () => buildYearOptions(projects, "updatedDate"),
@@ -26,6 +29,17 @@ function ProjectsSection({ projects = [] }) {
   );
 
   const filteredProjects = yearFilteredProjects;
+  const paginatedProjects = useMemo(() => {
+    const start = (page - 1) * PAGE_SIZE;
+    return filteredProjects.slice(start, start + PAGE_SIZE);
+  }, [filteredProjects, page]);
+  const totalPages = Math.max(1, Math.ceil(filteredProjects.length / PAGE_SIZE));
+  const handlePageChange = (next) => {
+    setPage(Math.min(Math.max(1, next), totalPages));
+  };
+  useEffect(() => {
+    setPage(1);
+  }, [filteredProjects]);
 
   const totalPeople = useMemo(
     () => filteredProjects.reduce((sum, project) => sum + project.peopleTrained, 0),
@@ -72,25 +86,7 @@ function ProjectsSection({ projects = [] }) {
           Download PDF
         </button>
       </div>
-      <div className="d-flex justify-content-between align-items-center mb-2 chart-toolbar">
-        <span className="text-muted small">
-          {selectedYear === "all" ? "Showing all years" : `Filtered to ${selectedYear}`}
-        </span>
-        {yearOptions.length > 0 && (
-          <select
-            className="form-select form-select-sm w-auto"
-            value={selectedYear}
-            onChange={(event) => setSelectedYear(event.target.value)}
-          >
-            <option value="all">All years</option>
-            {yearOptions.map((year) => (
-              <option key={year} value={year}>
-                {year}
-              </option>
-            ))}
-          </select>
-        )}
-      </div>
+     
       <div className="table-scroll">
         <table className="table table-striped align-middle">
           <thead>
@@ -104,7 +100,7 @@ function ProjectsSection({ projects = [] }) {
             </tr>
           </thead>
           <tbody>
-            {filteredProjects.map((p, idx) => (
+            {paginatedProjects.map((p, idx) => (
               <tr key={p.projectCategory + idx}>
                 <td className="fw-semibold">{p.projectCategory}</td>
                 <td>{p.place}</td>
@@ -128,6 +124,29 @@ function ProjectsSection({ projects = [] }) {
           </tbody>
         </table>
       </div>
+      {filteredProjects.length > PAGE_SIZE && (
+        <div className="pagination-controls">
+          <button
+            type="button"
+            className="btn btn-sm btn-outline-secondary"
+            onClick={() => handlePageChange(page - 1)}
+            disabled={page === 1}
+          >
+            Prev
+          </button>
+          <span className="text-muted small">
+            Page {page} of {totalPages}
+          </span>
+          <button
+            type="button"
+            className="btn btn-sm btn-outline-secondary"
+            onClick={() => handlePageChange(page + 1)}
+            disabled={page === totalPages}
+          >
+            Next
+          </button>
+        </div>
+      )}
       {filteredProjects.length > 0 && (
         <div className="chart-container mt-4">
           <div className="d-flex flex-column flex-lg-row justify-content-between align-items-start gap-3 mb-3">

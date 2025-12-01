@@ -98,25 +98,7 @@ function GrowthStatsSection({ growthStatistics = [], population = 0 }) {
           Download PDF
         </button>
       </div>
-      <div className="d-flex justify-content-between align-items-center mb-2 chart-toolbar">
-        <span className="text-muted small">
-          {selectedYear === "all" ? "Showing all years" : `Filtered to ${selectedYear}`}
-        </span>
-        {yearOptions.length > 0 && (
-          <select
-            className="form-select form-select-sm w-auto"
-            value={selectedYear}
-            onChange={(event) => setSelectedYear(event.target.value)}
-          >
-            <option value="all">All years</option>
-            {yearOptions.map((year) => (
-              <option key={year} value={year}>
-                {year}
-              </option>
-            ))}
-          </select>
-        )}
-      </div>
+    
       <div className="table-scroll">
         <table className="table table-striped align-middle">
           <thead>

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { cheData } from "../data/cheData";
 import VillageReport from "../components/VillageReport";
 import ScopeReportTabs from "../components/report/ScopeReportTabs";
+import mapImage from "../assets/map.png";
 
 const normalizeContinentName = (value) => value ?? "Unspecified";
 
@@ -587,8 +588,8 @@ function HomePage() {
   });
 
   const selectedGraphMetric = useMemo(
-    () => movementMetricDescriptors.find((metric) => metric.key === graphMetricKey),
-    [graphMetricKey]
+    () => extendedDescriptors.find((metric) => metric.key === graphMetricKey),
+    [extendedDescriptors, graphMetricKey]
   );
 
   const graphSeries = useMemo(() => {
@@ -723,8 +724,8 @@ function HomePage() {
         </div>
       </section>
 
-      <div className="row g-4 mb-4">
-        <div className="col-12">
+      <div className="row g-4 mb-4 align-items-stretch">
+        <div className="col-12 col-xxl-6">
           <section className="app-card p-4 h-100">
             <div className="d-flex flex-column flex-xl-row align-items-start gap-4 mb-4">
               <div className="flex-grow-1">
@@ -772,16 +773,16 @@ function HomePage() {
                     <div className="stat-panel-header mb-1">
                       <p className="muted-label mb-0">{metric.label}</p>
                       {metric.graphable && (
-                        <button
-                          type="button"
-                          className="btn btn-sm btn-outline-primary btn-icon stat-panel-action"
-                          onClick={() => handleOpenGraph(metric.key)}
-                          aria-label={`View ${metric.label} chart`}
-                        >
-                          <svg
-                            viewBox="0 0 16 16"
-                            role="img"
-                            aria-hidden="true"
+                      <button
+                        type="button"
+                        className="graph-button stat-panel-action"
+                        onClick={() => handleOpenGraph(metric.key)}
+                        aria-label={`View ${metric.label} chart`}
+                      >
+                        <svg
+                          viewBox="0 0 16 16"
+                          role="img"
+                          aria-hidden="true"
                             focusable="false"
                           >
                             <path
@@ -812,6 +813,11 @@ function HomePage() {
             </div>
           </section>
         </div>
+        <div className="col-12 col-xxl-6 d-flex">
+          <div className="app-card map-card w-100 h-100 p-0 overflow-hidden">
+            <img src={mapImage} alt="Global coverage map" className="map-image" />
+          </div>
+        </div>
       </div>
       {selectedVillageData && (
         <>
@@ -819,7 +825,7 @@ function HomePage() {
           <VillageReport village={filteredVillageReport ?? selectedVillageData} />
         </>
       )}
-      {!selectedVillageData && hasScopeSelection && (
+      {!selectedVillageData && (
         <ScopeReportTabs
           selectionSummary={scopeSummary}
           selectionTrail={selectionTrail}
