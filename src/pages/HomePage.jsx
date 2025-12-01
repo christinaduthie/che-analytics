@@ -87,12 +87,6 @@ const movementMetricDescriptors = [
     buildSeries: buildCoverageSeries((stats) => stats.workerPartnerOrganizations ?? 0),
   },
   {
-    key: "cheTrainedWorkers",
-    label: "CHE Trained Workers",
-    valueAccessor: ({ coverage }) => coverage.cheTrainedWorkers ?? 0,
-    buildSeries: buildCoverageSeries((stats) => stats.cheTrainedWorkers ?? 0),
-  },
-  {
     key: "mvcAdoptedWorkers",
     label: "MVC Adopted Workers",
     valueAccessor: ({ coverage }) => coverage.mvcWorkers ?? 0,

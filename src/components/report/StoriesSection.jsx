@@ -100,7 +100,7 @@ function StoriesSection({ transformationStories = [] }) {
   const handleDownloadPdf = () => {
     if (!hasSelection) return;
     downloadTablePdf({
-      title: "Transformation stories",
+      title: "Transformation-Stories",
       columns: ["Category", "Place", "Updated", "People impacted"],
       rows: selectedStories.map((s) => [
         s.storiesCategory ?? "",
@@ -231,7 +231,7 @@ function StoriesSection({ transformationStories = [] }) {
         <div className="chart-container mt-4">
           <div className="d-flex flex-column flex-lg-row justify-content-between align-items-start gap-3 mb-3">
             <div>
-              <h4 className="section-heading mb-1">Transformation stories</h4>
+              <h4 className="section-heading mb-1">Transformation-Stories</h4>
               <p className="text-muted mb-0">Drill down into when and how lives were changed.</p>
             </div>
             <div className="chart-toolbar">
