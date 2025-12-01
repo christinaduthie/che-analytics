@@ -16,7 +16,7 @@ function ChurchesSection({ churches = [] }) {
   const [selectedYear, setSelectedYear] = useState("all");
   const [chartView, setChartView] = useState("timeline");
   const [page, setPage] = useState(1);
-
+  const [selectedRows, setSelectedRows] = useState(new Set());
   const yearOptions = useMemo(
     () => buildYearOptions(churches, "updateDate"),
     [churches]
@@ -28,17 +28,56 @@ function ChurchesSection({ churches = [] }) {
   );
 
   const filteredChurches = yearFilteredChurches;
-  const paginatedChurches = useMemo(() => {
-    const start = (page - 1) * PAGE_SIZE;
-    return filteredChurches.slice(start, start + PAGE_SIZE);
-  }, [filteredChurches, page]);
+  const startIndex = (page - 1) * PAGE_SIZE;
+  const paginatedChurches = filteredChurches.slice(
+    startIndex,
+    startIndex + PAGE_SIZE
+  );
   const totalPages = Math.max(1, Math.ceil(filteredChurches.length / PAGE_SIZE));
   const handlePageChange = (next) => {
     setPage(Math.min(Math.max(1, next), totalPages));
   };
   useEffect(() => {
     setPage(1);
+    setSelectedRows(new Set());
   }, [filteredChurches]);
+
+  const makeRowKey = (church, index) =>
+    `${church.churchName ?? "church"}-${church.updateDate ?? index}`;
+
+  const selectedChurches = useMemo(
+    () =>
+      filteredChurches.filter((church, index) =>
+        selectedRows.has(makeRowKey(church, index))
+      ),
+    [filteredChurches, selectedRows]
+  );
+  const hasSelection = selectedRows.size > 0;
+  const toggleRowSelection = (key) => {
+    setSelectedRows((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) {
+        next.delete(key);
+      } else {
+        next.add(key);
+      }
+      return next;
+    });
+  };
+
+  const toggleSelectAll = (checked) => {
+    if (checked) {
+      setSelectedRows(
+        new Set(
+          filteredChurches.map((church, index) =>
+            makeRowKey(church, index)
+          )
+        )
+      );
+    } else {
+      setSelectedRows(new Set());
+    }
+  };
 
   const chartData = useMemo(
     () =>
@@ -73,7 +112,7 @@ function ChurchesSection({ churches = [] }) {
   );
 
   const handleDownloadPdf = () => {
-    if (!filteredChurches.length) return;
+    if (!hasSelection) return;
     downloadTablePdf({
       title: "Churches overview",
       columns: [
@@ -84,7 +123,7 @@ function ChurchesSection({ churches = [] }) {
         "New commitments",
         "Left faith",
       ],
-      rows: filteredChurches.map((c) => [
+      rows: selectedChurches.map((c) => [
         c.churchName ?? "",
         c.place ?? "",
         c.establishmentDate ?? "",
@@ -103,7 +142,7 @@ function ChurchesSection({ churches = [] }) {
           type="button"
           className="btn btn-download-primary"
           onClick={handleDownloadPdf}
-          disabled={filteredChurches.length === 0}
+          disabled={!hasSelection}
         >
           Download PDF
         </button>
@@ -113,6 +152,17 @@ function ChurchesSection({ churches = [] }) {
         <table className="table table-striped align-middle">
           <thead>
             <tr>
+              <th className="text-center">
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  checked={
+                    filteredChurches.length > 0 &&
+                    selectedRows.size === filteredChurches.length
+                  }
+                  onChange={(event) => toggleSelectAll(event.target.checked)}
+                />
+              </th>
               <th>Church</th>
               <th>Location</th>
               <th>Est. date</th>
@@ -124,9 +174,20 @@ function ChurchesSection({ churches = [] }) {
             </tr>
           </thead>
           <tbody>
-            {paginatedChurches.map((c, idx) => (
-              <tr key={c.churchName + idx}>
-                <td className="fw-semibold">{c.churchName}</td>
+            {paginatedChurches.map((c, idx) => {
+              const globalIndex = startIndex + idx;
+              const rowKey = makeRowKey(c, globalIndex);
+              return (
+                <tr key={rowKey}>
+                  <td className="text-center">
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      checked={selectedRows.has(rowKey)}
+                      onChange={() => toggleRowSelection(rowKey)}
+                    />
+                  </td>
+                  <td className="fw-semibold">{c.churchName}</td>
                 <td>{c.place}</td>
                 <td>{c.establishmentDate}</td>
                 <td>{c.updateDate}</td>
@@ -138,11 +199,12 @@ function ChurchesSection({ churches = [] }) {
                   </button>
                 </td>
                 <td>{c.remarks}</td>
-              </tr>
-            ))}
+                </tr>
+              );
+            })}
             {filteredChurches.length === 0 && (
               <tr>
-                <td colSpan={8} className="text-center text-muted">
+                <td colSpan={9} className="text-center text-muted">
                   No churches recorded for this filter.
                 </td>
               </tr>
@@ -151,7 +213,7 @@ function ChurchesSection({ churches = [] }) {
         </table>
       </div>
       {filteredChurches.length > PAGE_SIZE && (
-        <div className="pagination-controls">
+        <div className="d-flex justify-content-between align-items-center mt-2">
           <button
             type="button"
             className="btn btn-sm btn-outline-secondary"

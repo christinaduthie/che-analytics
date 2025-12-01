@@ -17,6 +17,7 @@ function TrainingsSection({ trainings = [] }) {
   const [selectedYear, setSelectedYear] = useState("all");
   const [chartView, setChartView] = useState("timeline");
   const [page, setPage] = useState(1);
+  const [selectedRows, setSelectedRows] = useState(new Set());
 
   const yearOptions = useMemo(
     () => buildYearOptions(trainings, "updatedDate"),
@@ -29,17 +30,57 @@ function TrainingsSection({ trainings = [] }) {
   );
 
   const filteredTrainings = yearFilteredTrainings;
-  const paginatedTrainings = useMemo(() => {
-    const start = (page - 1) * PAGE_SIZE;
-    return filteredTrainings.slice(start, start + PAGE_SIZE);
-  }, [filteredTrainings, page]);
+  const startIndex = (page - 1) * PAGE_SIZE;
+  const paginatedTrainings = filteredTrainings.slice(
+    startIndex,
+    startIndex + PAGE_SIZE
+  );
   const totalPages = Math.max(1, Math.ceil(filteredTrainings.length / PAGE_SIZE));
   const handlePageChange = (next) => {
     setPage(Math.min(Math.max(1, next), totalPages));
   };
   useEffect(() => {
     setPage(1);
+    setSelectedRows(new Set());
   }, [filteredTrainings]);
+
+  const makeRowKey = (training, index) =>
+    `${training.trainingCategory ?? "training"}-${
+      training.updatedDate ?? index
+    }`;
+  const selectedTrainings = useMemo(
+    () =>
+      filteredTrainings.filter((training, index) =>
+        selectedRows.has(makeRowKey(training, index))
+      ),
+    [filteredTrainings, selectedRows]
+  );
+  const hasSelection = selectedRows.size > 0;
+  const toggleRowSelection = (key) => {
+    setSelectedRows((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) {
+        next.delete(key);
+      } else {
+        next.add(key);
+      }
+      return next;
+    });
+  };
+
+  const toggleSelectAll = (checked) => {
+    if (checked) {
+      setSelectedRows(
+        new Set(
+          filteredTrainings.map((training, index) =>
+            makeRowKey(training, index)
+          )
+        )
+      );
+    } else {
+      setSelectedRows(new Set());
+    }
+  };
 
   const totalParticipants = useMemo(
     () => filteredTrainings.reduce((sum, training) => sum + training.peopleTrained, 0),
@@ -60,11 +101,11 @@ function TrainingsSection({ trainings = [] }) {
   );
 
   const handleDownloadPdf = () => {
-    if (!filteredTrainings.length) return;
+    if (!hasSelection) return;
     downloadTablePdf({
       title: "Trainings report",
       columns: ["Category", "Place", "Updated", "People trained"],
-      rows: filteredTrainings.map((t) => [
+      rows: selectedTrainings.map((t) => [
         t.trainingCategory ?? "",
         t.place ?? "",
         t.updatedDate ?? "",
@@ -81,7 +122,7 @@ function TrainingsSection({ trainings = [] }) {
           type="button"
           className="btn btn-download-primary"
           onClick={handleDownloadPdf}
-          disabled={filteredTrainings.length === 0}
+          disabled={!hasSelection}
         >
           Download PDF
         </button>
@@ -91,6 +132,18 @@ function TrainingsSection({ trainings = [] }) {
         <table className="table table-striped align-middle">
           <thead>
             <tr>
+              <th className="text-center">
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  checked={
+                    filteredTrainings.length > 0 &&
+                    selectedRows.size === filteredTrainings.length
+                  }
+                  onChange={(event) => toggleSelectAll(event.target.checked)}
+                />
+              </th>
+              <th className="text-center">Select</th>
               <th>Training category</th>
               <th>Place</th>
               <th>Updated</th>
@@ -100,9 +153,20 @@ function TrainingsSection({ trainings = [] }) {
             </tr>
           </thead>
           <tbody>
-            {paginatedTrainings.map((t, idx) => (
-              <tr key={t.trainingCategory + idx}>
-                <td className="fw-semibold">{t.trainingCategory}</td>
+            {paginatedTrainings.map((t, idx) => {
+              const globalIndex = startIndex + idx;
+              const rowKey = makeRowKey(t, globalIndex);
+              return (
+                <tr key={rowKey}>
+                  <td className="text-center">
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      checked={selectedRows.has(rowKey)}
+                      onChange={() => toggleRowSelection(rowKey)}
+                    />
+                  </td>
+                  <td className="fw-semibold">{t.trainingCategory}</td>
                 <td>{t.place}</td>
                 <td>{t.updatedDate}</td>
                 <td className="fw-semibold">{t.peopleTrained}</td>
@@ -112,11 +176,12 @@ function TrainingsSection({ trainings = [] }) {
                   </button>
                 </td>
                 <td>{t.description}</td>
-              </tr>
-            ))}
+                </tr>
+              );
+            })}
             {filteredTrainings.length === 0 && (
               <tr>
-                <td colSpan={6} className="text-center text-muted">
+                <td colSpan={7} className="text-center text-muted">
                   No trainings captured for this filter.
                 </td>
               </tr>
@@ -125,7 +190,7 @@ function TrainingsSection({ trainings = [] }) {
         </table>
       </div>
       {filteredTrainings.length > PAGE_SIZE && (
-        <div className="pagination-controls">
+        <div className="d-flex justify-content-between align-items-center mt-2">
           <button
             type="button"
             className="btn btn-sm btn-outline-secondary"

@@ -17,6 +17,7 @@ function ProjectsSection({ projects = [] }) {
   const [selectedYear, setSelectedYear] = useState("all");
   const [chartView, setChartView] = useState("timeline");
   const [page, setPage] = useState(1);
+  const [selectedRows, setSelectedRows] = useState(new Set());
 
   const yearOptions = useMemo(
     () => buildYearOptions(projects, "updatedDate"),
@@ -29,17 +30,55 @@ function ProjectsSection({ projects = [] }) {
   );
 
   const filteredProjects = yearFilteredProjects;
-  const paginatedProjects = useMemo(() => {
-    const start = (page - 1) * PAGE_SIZE;
-    return filteredProjects.slice(start, start + PAGE_SIZE);
-  }, [filteredProjects, page]);
+  const startIndex = (page - 1) * PAGE_SIZE;
+  const paginatedProjects = filteredProjects.slice(
+    startIndex,
+    startIndex + PAGE_SIZE
+  );
   const totalPages = Math.max(1, Math.ceil(filteredProjects.length / PAGE_SIZE));
   const handlePageChange = (next) => {
     setPage(Math.min(Math.max(1, next), totalPages));
   };
   useEffect(() => {
     setPage(1);
+    setSelectedRows(new Set());
   }, [filteredProjects]);
+
+  const makeRowKey = (project, index) =>
+    `${project.projectCategory ?? "project"}-${project.updatedDate ?? index}`;
+  const selectedProjects = useMemo(
+    () =>
+      filteredProjects.filter((project, index) =>
+        selectedRows.has(makeRowKey(project, index))
+      ),
+    [filteredProjects, selectedRows]
+  );
+  const hasSelection = selectedRows.size > 0;
+  const toggleRowSelection = (key) => {
+    setSelectedRows((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) {
+        next.delete(key);
+      } else {
+        next.add(key);
+      }
+      return next;
+    });
+  };
+
+  const toggleSelectAll = (checked) => {
+    if (checked) {
+      setSelectedRows(
+        new Set(
+          filteredProjects.map((project, index) =>
+            makeRowKey(project, index)
+          )
+        )
+      );
+    } else {
+      setSelectedRows(new Set());
+    }
+  };
 
   const totalPeople = useMemo(
     () => filteredProjects.reduce((sum, project) => sum + project.peopleTrained, 0),
@@ -60,11 +99,11 @@ function ProjectsSection({ projects = [] }) {
   );
 
   const handleDownloadPdf = () => {
-    if (!filteredProjects.length) return;
+    if (!hasSelection) return;
     downloadTablePdf({
       title: "Projects report",
       columns: ["Category", "Place", "Updated", "People reached"],
-      rows: filteredProjects.map((p) => [
+      rows: selectedProjects.map((p) => [
         p.projectCategory ?? "",
         p.place ?? "",
         p.updatedDate ?? "",
@@ -81,7 +120,7 @@ function ProjectsSection({ projects = [] }) {
           type="button"
           className="btn btn-download-primary"
           onClick={handleDownloadPdf}
-          disabled={filteredProjects.length === 0}
+          disabled={!hasSelection}
         >
           Download PDF
         </button>
@@ -91,6 +130,17 @@ function ProjectsSection({ projects = [] }) {
         <table className="table table-striped align-middle">
           <thead>
             <tr>
+              <th className="text-center">
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  checked={
+                    filteredProjects.length > 0 &&
+                    selectedRows.size === filteredProjects.length
+                  }
+                  onChange={(event) => toggleSelectAll(event.target.checked)}
+                />
+              </th>
               <th>Project category</th>
               <th>Place</th>
               <th>Updated</th>
@@ -100,9 +150,20 @@ function ProjectsSection({ projects = [] }) {
             </tr>
           </thead>
           <tbody>
-            {paginatedProjects.map((p, idx) => (
-              <tr key={p.projectCategory + idx}>
-                <td className="fw-semibold">{p.projectCategory}</td>
+            {paginatedProjects.map((p, idx) => {
+              const globalIndex = startIndex + idx;
+              const rowKey = makeRowKey(p, globalIndex);
+              return (
+                <tr key={rowKey}>
+                  <td className="text-center">
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      checked={selectedRows.has(rowKey)}
+                      onChange={() => toggleRowSelection(rowKey)}
+                    />
+                  </td>
+                  <td className="fw-semibold">{p.projectCategory}</td>
                 <td>{p.place}</td>
                 <td>{p.updatedDate}</td>
                 <td className="fw-semibold">{p.peopleTrained}</td>
@@ -112,11 +173,12 @@ function ProjectsSection({ projects = [] }) {
                   </button>
                 </td>
                 <td>{p.description}</td>
-              </tr>
-            ))}
+                </tr>
+              );
+            })}
             {filteredProjects.length === 0 && (
               <tr>
-                <td colSpan={6} className="text-center text-muted">
+                <td colSpan={7} className="text-center text-muted">
                   No projects documented for this filter.
                 </td>
               </tr>
@@ -125,7 +187,7 @@ function ProjectsSection({ projects = [] }) {
         </table>
       </div>
       {filteredProjects.length > PAGE_SIZE && (
-        <div className="pagination-controls">
+        <div className="d-flex justify-content-between align-items-center mt-2">
           <button
             type="button"
             className="btn btn-sm btn-outline-secondary"

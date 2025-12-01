@@ -17,6 +17,7 @@ function StoriesSection({ transformationStories = [] }) {
   const [selectedYear, setSelectedYear] = useState("all");
   const [chartView, setChartView] = useState("timeline");
   const [page, setPage] = useState(1);
+  const [selectedRows, setSelectedRows] = useState(new Set());
 
   const yearOptions = useMemo(
     () => buildYearOptions(transformationStories, "updatedDate"),
@@ -29,17 +30,53 @@ function StoriesSection({ transformationStories = [] }) {
   );
 
   const filteredStories = yearFilteredStories;
-  const paginatedStories = useMemo(() => {
-    const start = (page - 1) * PAGE_SIZE;
-    return filteredStories.slice(start, start + PAGE_SIZE);
-  }, [filteredStories, page]);
+  const startIndex = (page - 1) * PAGE_SIZE;
+  const paginatedStories = filteredStories.slice(
+    startIndex,
+    startIndex + PAGE_SIZE
+  );
   const totalPages = Math.max(1, Math.ceil(filteredStories.length / PAGE_SIZE));
   const handlePageChange = (next) => {
     setPage(Math.min(Math.max(1, next), totalPages));
   };
   useEffect(() => {
     setPage(1);
+    setSelectedRows(new Set());
   }, [filteredStories]);
+
+  const makeRowKey = (story, index) =>
+    `${story.storiesCategory ?? "story"}-${story.updatedDate ?? index}`;
+  const selectedStories = useMemo(
+    () =>
+      filteredStories.filter((story, index) =>
+        selectedRows.has(makeRowKey(story, index))
+      ),
+    [filteredStories, selectedRows]
+  );
+  const hasSelection = selectedRows.size > 0;
+  const toggleRowSelection = (key) => {
+    setSelectedRows((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) {
+        next.delete(key);
+      } else {
+        next.add(key);
+      }
+      return next;
+    });
+  };
+
+  const toggleSelectAll = (checked) => {
+    if (checked) {
+      setSelectedRows(
+        new Set(
+          filteredStories.map((story, index) => makeRowKey(story, index))
+        )
+      );
+    } else {
+      setSelectedRows(new Set());
+    }
+  };
 
   const totalImpacted = useMemo(
     () => filteredStories.reduce((sum, story) => sum + story.peopleImpacted, 0),
@@ -61,11 +98,11 @@ function StoriesSection({ transformationStories = [] }) {
   );
 
   const handleDownloadPdf = () => {
-    if (!filteredStories.length) return;
+    if (!hasSelection) return;
     downloadTablePdf({
       title: "Transformation stories",
       columns: ["Category", "Place", "Updated", "People impacted"],
-      rows: filteredStories.map((s) => [
+      rows: selectedStories.map((s) => [
         s.storiesCategory ?? "",
         s.place ?? "",
         s.updatedDate ?? "",
@@ -82,16 +119,46 @@ function StoriesSection({ transformationStories = [] }) {
           type="button"
           className="btn btn-download-primary"
           onClick={handleDownloadPdf}
-          disabled={filteredStories.length === 0}
+          disabled={!hasSelection}
         >
           Download PDF
         </button>
+      </div>
+      <div className="d-flex justify-content-between align-items-center mb-2 chart-toolbar">
+        <span className="text-muted small">
+          {selectedYear === "all" ? "Showing all years" : `Filtered to ${selectedYear}`}
+        </span>
+        {yearOptions.length > 0 && (
+          <select
+            className="form-select form-select-sm w-auto"
+            value={selectedYear}
+            onChange={(event) => setSelectedYear(event.target.value)}
+          >
+            <option value="all">All years</option>
+            {yearOptions.map((year) => (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            ))}
+          </select>
+        )}
       </div>
 
       <div className="table-scroll">
         <table className="table table-striped align-middle">
           <thead>
             <tr>
+              <th className="text-center">
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  checked={
+                    filteredStories.length > 0 &&
+                    selectedRows.size === filteredStories.length
+                  }
+                  onChange={(event) => toggleSelectAll(event.target.checked)}
+                />
+              </th>
               <th>Stories category</th>
               <th>Place</th>
               <th>Updated</th>
@@ -101,23 +168,35 @@ function StoriesSection({ transformationStories = [] }) {
             </tr>
           </thead>
           <tbody>
-            {paginatedStories.map((s, idx) => (
-              <tr key={s.storiesCategory + idx}>
-                <td className="fw-semibold">{s.storiesCategory}</td>
-                <td>{s.place}</td>
-                <td>{s.updatedDate}</td>
-                <td className="fw-semibold">{s.peopleImpacted}</td>
-                <td className="text-center">
-                  <button type="button" className="btn btn-sm btn-outline-secondary" title="View uploaded file">
-                    <img src={fileIcon} alt="file" className="file-icon" />
-                  </button>
-                </td>
-                <td>{s.description}</td>
-              </tr>
-            ))}
+            {paginatedStories.map((s, idx) => {
+              const globalIndex = startIndex + idx;
+              const rowKey = makeRowKey(s, globalIndex);
+              return (
+                <tr key={rowKey}>
+                  <td className="text-center">
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      checked={selectedRows.has(rowKey)}
+                      onChange={() => toggleRowSelection(rowKey)}
+                    />
+                  </td>
+                  <td className="fw-semibold">{s.storiesCategory}</td>
+                  <td>{s.place}</td>
+                  <td>{s.updatedDate}</td>
+                  <td className="fw-semibold">{s.peopleImpacted}</td>
+                  <td className="text-center">
+                    <button type="button" className="btn btn-sm btn-outline-secondary" title="View uploaded file">
+                      <img src={fileIcon} alt="file" className="file-icon" />
+                    </button>
+                  </td>
+                  <td>{s.description}</td>
+                </tr>
+              );
+            })}
             {filteredStories.length === 0 && (
               <tr>
-                <td colSpan={6} className="text-center text-muted">
+                <td colSpan={7} className="text-center text-muted">
                   No transformation stories submitted for this filter.
                 </td>
               </tr>
@@ -126,7 +205,7 @@ function StoriesSection({ transformationStories = [] }) {
         </table>
       </div>
       {filteredStories.length > PAGE_SIZE && (
-        <div className="pagination-controls">
+        <div className="d-flex justify-content-between align-items-center mt-2">
           <button
             type="button"
             className="btn btn-sm btn-outline-secondary"
@@ -152,7 +231,7 @@ function StoriesSection({ transformationStories = [] }) {
         <div className="chart-container mt-4">
           <div className="d-flex flex-column flex-lg-row justify-content-between align-items-start gap-3 mb-3">
             <div>
-              <h4 className="section-heading mb-1">Impact storytelling</h4>
+              <h4 className="section-heading mb-1">Transformation stories</h4>
               <p className="text-muted mb-0">Drill down into when and how lives were changed.</p>
             </div>
             <div className="chart-toolbar">

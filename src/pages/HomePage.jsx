@@ -205,6 +205,7 @@ function HomePage() {
   const [scopeVillage, setScopeVillage] = useState("");
   const [graphMetricKey, setGraphMetricKey] = useState(null);
   const [graphChartType, setGraphChartType] = useState("line");
+  const [organizationFilter, setOrganizationFilter] = useState("all");
   const locationMeta = useMemo(
     () => ({ unreachedContinents, globalTotals }),
     [unreachedContinents, globalTotals]
@@ -370,6 +371,16 @@ function HomePage() {
     timeline = [],
   } = normalizedData;
 
+  const organizationOptions = useMemo(
+    () => buildOrganizationOptions(villages),
+    [villages]
+  );
+
+  const organizationFilteredData = useMemo(
+    () => filterCollectionsByOrganization(locationAwareData, organizationFilter),
+    [locationAwareData, organizationFilter]
+  );
+
   const {
     villages: scopedVillages = villages,
     churches: scopedChurches,
@@ -377,7 +388,7 @@ function HomePage() {
     trainings: scopedTrainings,
     projects: scopedProjects,
     stories: scopedStories,
-  } = locationAwareData;
+  } = organizationFilteredData;
 
   const [timelineSelection, setTimelineSelection] = useState(() => ({
     from: 0,
@@ -521,6 +532,10 @@ function HomePage() {
     setScopeVillage(value);
   };
 
+  const handleOrganizationChange = (event) => {
+    setOrganizationFilter(event.target.value);
+  };
+
   const handleScopeReset = () => {
     setScopeContinent("");
     setScopeCountry("");
@@ -593,15 +608,21 @@ function HomePage() {
   );
 
   const graphSeries = useMemo(() => {
-    if (!selectedGraphMetric || typeof selectedGraphMetric.buildSeries !== "function") {
+    if (
+      !selectedGraphMetric ||
+      typeof selectedGraphMetric.buildSeries !== "function"
+    ) {
       return [];
     }
-    return selectedGraphMetric.buildSeries(locationAwareData, effectiveRange);
-  }, [selectedGraphMetric, locationAwareData, effectiveRange]);
+    return selectedGraphMetric.buildSeries(
+      organizationFilteredData,
+      effectiveRange
+    );
+  }, [selectedGraphMetric, organizationFilteredData, effectiveRange]);
 
   const dateFilteredCollections = useMemo(
-    () => filterCollectionsByDate(locationAwareData, effectiveRange),
-    [locationAwareData, effectiveRange]
+    () => filterCollectionsByDate(organizationFilteredData, effectiveRange),
+    [organizationFilteredData, effectiveRange]
   );
 
   const filteredChurches = dateFilteredCollections.churches ?? [];
@@ -609,12 +630,20 @@ function HomePage() {
   const filteredProjects = dateFilteredCollections.projects ?? [];
   const filteredStories = dateFilteredCollections.stories ?? [];
 
+  const organizationFilteredVillage = useMemo(() => {
+    if (!selectedVillageData) return null;
+    if (organizationFilter === "all") return selectedVillageData;
+    const org =
+      selectedVillageData.cheVillageInformation?.cheWorkerOrganization;
+    return org === organizationFilter ? selectedVillageData : null;
+  }, [selectedVillageData, organizationFilter]);
+
   const filteredVillageReport = useMemo(
     () =>
-      selectedVillageData
-        ? filterVillageReportData(selectedVillageData, effectiveRange)
+      organizationFilteredVillage
+        ? filterVillageReportData(organizationFilteredVillage, effectiveRange)
         : null,
-    [selectedVillageData, effectiveRange]
+    [organizationFilteredVillage, effectiveRange]
   );
 
   return (
@@ -640,7 +669,27 @@ function HomePage() {
               Reset scope
             </button>
           </div>
-          <div className="text-muted small text-xl-end">{scopeSummary}</div>
+          <div className="d-flex flex-wrap align-items-center gap-2">
+            <label
+              htmlFor="organization-filter"
+              className="text-muted small mb-0"
+            >
+              Organizations
+            </label>
+            <select
+              id="organization-filter"
+              className="form-select form-select-sm w-auto"
+              value={organizationFilter}
+              onChange={handleOrganizationChange}
+            >
+              <option value="all">All organizations</option>
+              {organizationOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
         <div className="row g-3">
           <div className="col-12 col-md-6 col-xxl-2">
@@ -819,13 +868,15 @@ function HomePage() {
           </div>
         </div>
       </div>
-      {selectedVillageData && (
-        <>
-        
-          <VillageReport village={filteredVillageReport ?? selectedVillageData} />
-        </>
+      <div className="mb-3">
+        <h2 className="section-heading mb-0">Reports</h2>
+      </div>
+      {organizationFilteredVillage && (
+        <VillageReport
+          village={filteredVillageReport ?? organizationFilteredVillage}
+        />
       )}
-      {!selectedVillageData && (
+      {!organizationFilteredVillage && (
         <ScopeReportTabs
           selectionSummary={scopeSummary}
           selectionTrail={selectionTrail}
@@ -1418,6 +1469,19 @@ function describeScopeSummary(selection = {}) {
   return "Global focus · All regions";
 }
 
+function buildOrganizationOptions(villages = []) {
+  const organizations = new Set();
+  (villages ?? []).forEach((village) => {
+    const org = village.cheVillageInformation?.cheWorkerOrganization;
+    if (org) {
+      organizations.add(org);
+    }
+  });
+  return Array.from(organizations)
+    .sort((a, b) => a.localeCompare(b))
+    .map((value) => ({ label: value, value }));
+}
+
 function normalizeCheDataset(countries = []) {
   const villages = [];
   const churches = [];
@@ -1447,28 +1511,53 @@ function normalizeCheDataset(countries = []) {
             subDistrict: subDistrict.subDistrictName,
           };
           subDistrict.villages?.forEach((village) => {
-            const villageName =
-              village.cheVillageInformation?.cheVillageName ?? "";
+            const info = village.cheVillageInformation ?? {};
+            const villageName = info.cheVillageName ?? "";
+            const organization = info.cheWorkerOrganization ?? "";
             const location = { ...baseLocation, village: villageName };
-            villages.push({ ...village, __location: location });
+            villages.push({
+              ...village,
+              __location: location,
+              __organization: organization,
+            });
             village.churches?.forEach((church) => {
-              churches.push({ ...church, __location: location });
+              churches.push({
+                ...church,
+                __location: location,
+                __organization: organization,
+              });
               pushDate(church.updateDate);
             });
             village.growthStatistics?.forEach((stat) => {
-              growthStats.push({ ...stat, __location: location });
+              growthStats.push({
+                ...stat,
+                __location: location,
+                __organization: organization,
+              });
               pushDate(stat.updatedDate);
             });
             village.trainings?.forEach((training) => {
-              trainings.push({ ...training, __location: location });
+              trainings.push({
+                ...training,
+                __location: location,
+                __organization: organization,
+              });
               pushDate(training.updatedDate);
             });
             village.projects?.forEach((project) => {
-              projects.push({ ...project, __location: location });
+              projects.push({
+                ...project,
+                __location: location,
+                __organization: organization,
+              });
               pushDate(project.updatedDate);
             });
             village.transformationStories?.forEach((story) => {
-              stories.push({ ...story, __location: location });
+              stories.push({
+                ...story,
+                __location: location,
+                __organization: organization,
+              });
               pushDate(story.updatedDate);
             });
           });
@@ -1719,6 +1808,25 @@ function filterVillageReportData(village, range) {
       "updatedDate",
       range
     ),
+  };
+}
+
+function filterCollectionsByOrganization(collections = {}, organization) {
+  if (!organization || organization === "all") {
+    return collections;
+  }
+  const filterItems = (items = []) =>
+    (items ?? []).filter(
+      (item) => (item?.__organization ?? "") === organization
+    );
+  return {
+    ...collections,
+    villages: filterItems(collections.villages),
+    churches: filterItems(collections.churches),
+    growthStats: filterItems(collections.growthStats),
+    trainings: filterItems(collections.trainings),
+    projects: filterItems(collections.projects),
+    stories: filterItems(collections.stories),
   };
 }
 
