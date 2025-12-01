@@ -115,7 +115,10 @@ function ProjectsSection({ projects = [] }) {
 
   return (
     <section className="mb-4">
-      <div className="report-toolbar d-flex flex-column flex-xl-row justify-content-end align-items-start gap-3 mb-3">
+      <div className="report-toolbar d-flex flex-column flex-xl-row justify-content-between align-items-start gap-3 mb-3">
+        <div>
+          <p className="text-muted text-uppercase small mb-1">Projects Report</p>
+        </div>
         <button
           type="button"
           className="btn btn-download-primary"
@@ -143,9 +146,9 @@ function ProjectsSection({ projects = [] }) {
               </th>
               <th>Project category</th>
               <th>Place</th>
-              <th>Updated</th>
-              <th>People trained</th>
-              <th>File</th>
+              <th>Updated Date</th>
+              <th>No. of People Benefited</th>
+              <th>Photos</th>
               <th>Description</th>
             </tr>
           </thead>
@@ -213,7 +216,7 @@ function ProjectsSection({ projects = [] }) {
         <div className="chart-container mt-4">
           <div className="d-flex flex-column flex-lg-row justify-content-between align-items-start gap-3 mb-3">
             <div>
-              <h4 className="section-heading mb-1">Impact analytics</h4>
+              <h4 className="section-heading mb-1">Projects/Initiatives Impact Chart</h4>
               <p className="text-muted mb-0">Compare reach across time or by initiative.</p>
             </div>
             <div className="chart-toolbar">

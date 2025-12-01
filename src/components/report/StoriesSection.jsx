@@ -114,7 +114,10 @@ function StoriesSection({ transformationStories = [] }) {
 
   return (
     <section className="mb-4">
-      <div className="report-toolbar d-flex flex-column flex-xl-row justify-content-end align-items-start gap-3 mb-3">
+      <div className="report-toolbar d-flex flex-column flex-xl-row justify-content-between align-items-start gap-3 mb-3">
+        <div>
+          <p className="text-muted text-uppercase small mb-1">Stories Report</p>
+        </div>
         <button
           type="button"
           className="btn btn-download-primary"
@@ -124,25 +127,7 @@ function StoriesSection({ transformationStories = [] }) {
           Download PDF
         </button>
       </div>
-      <div className="d-flex justify-content-between align-items-center mb-2 chart-toolbar">
-        <span className="text-muted small">
-          {selectedYear === "all" ? "Showing all years" : `Filtered to ${selectedYear}`}
-        </span>
-        {yearOptions.length > 0 && (
-          <select
-            className="form-select form-select-sm w-auto"
-            value={selectedYear}
-            onChange={(event) => setSelectedYear(event.target.value)}
-          >
-            <option value="all">All years</option>
-            {yearOptions.map((year) => (
-              <option key={year} value={year}>
-                {year}
-              </option>
-            ))}
-          </select>
-        )}
-      </div>
+
 
       <div className="table-scroll">
         <table className="table table-striped align-middle">
@@ -161,10 +146,9 @@ function StoriesSection({ transformationStories = [] }) {
               </th>
               <th>Stories category</th>
               <th>Place</th>
-              <th>Updated</th>
-              <th>People impacted</th>
-              <th>File</th>
-              <th>Description</th>
+              <th>Updated Date</th>
+              <th>Photos</th>
+              <th>Stories</th>
             </tr>
           </thead>
           <tbody>
@@ -184,7 +168,6 @@ function StoriesSection({ transformationStories = [] }) {
                   <td className="fw-semibold">{s.storiesCategory}</td>
                   <td>{s.place}</td>
                   <td>{s.updatedDate}</td>
-                  <td className="fw-semibold">{s.peopleImpacted}</td>
                   <td className="text-center">
                     <button type="button" className="btn btn-sm btn-outline-secondary" title="View uploaded file">
                       <img src={fileIcon} alt="file" className="file-icon" />
@@ -196,7 +179,7 @@ function StoriesSection({ transformationStories = [] }) {
             })}
             {filteredStories.length === 0 && (
               <tr>
-                <td colSpan={7} className="text-center text-muted">
+                <td colSpan={6} className="text-center text-muted">
                   No transformation stories submitted for this filter.
                 </td>
               </tr>
@@ -225,38 +208,6 @@ function StoriesSection({ transformationStories = [] }) {
           >
             Next
           </button>
-        </div>
-      )}
-      {filteredStories.length > 0 && (
-        <div className="chart-container mt-4">
-          <div className="d-flex flex-column flex-lg-row justify-content-between align-items-start gap-3 mb-3">
-            <div>
-              <h4 className="section-heading mb-1">Transformation-Stories</h4>
-              <p className="text-muted mb-0">Drill down into when and how lives were changed.</p>
-            </div>
-            <div className="chart-toolbar">
-              <div className="view-toggle">
-                {["timeline", "category"].map((view) => (
-                  <button
-                    key={view}
-                    type="button"
-                    className={chartView === view ? "active" : ""}
-                    onClick={() => setChartView(view)}
-                  >
-                    {view === "timeline" ? "Timeline" : "By category"}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-          {chartView === "timeline" ? (
-            <D3TimeSeriesChart
-              data={timelineData}
-              series={[{ key: "peopleImpacted", color: "#f43f5e", label: "People impacted" }]}
-            />
-          ) : (
-            <D3BarChart data={categoryChartData} xKey="name" yKey="value" barColor="#f43f5e" />
-          )}
         </div>
       )}
     </section>

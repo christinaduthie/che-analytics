@@ -117,7 +117,10 @@ function TrainingsSection({ trainings = [] }) {
 
   return (
     <section className="mb-4">
-      <div className="report-toolbar d-flex flex-column flex-xl-row justify-content-end align-items-start gap-3 mb-3">
+      <div className="report-toolbar d-flex flex-column flex-xl-row justify-content-between align-items-start gap-3 mb-3">
+        <div>
+          <p className="text-muted text-uppercase small mb-1">Trainings Report</p>
+        </div>
         <button
           type="button"
           className="btn btn-download-primary"
@@ -143,13 +146,12 @@ function TrainingsSection({ trainings = [] }) {
                   onChange={(event) => toggleSelectAll(event.target.checked)}
                 />
               </th>
-              <th className="text-center">Select</th>
               <th>Training category</th>
               <th>Place</th>
-              <th>Updated</th>
+              <th>Updated Date</th>
               <th>People trained</th>
-              <th>File</th>
-              <th>Description</th>
+              <th>Photos</th>
+              <th>Stories</th>
             </tr>
           </thead>
           <tbody>
@@ -216,10 +218,8 @@ function TrainingsSection({ trainings = [] }) {
         <div className="chart-container mt-4">
           <div className="d-flex flex-column flex-lg-row justify-content-between align-items-start gap-3 mb-3">
             <div>
-              <h4 className="section-heading mb-1">Participation analytics</h4>
-              <p className="text-muted mb-0">
-                Toggle to compare date trends with categorical focus.
-              </p>
+              <h4 className="section-heading mb-1">Training Growth Chart</h4>
+            
             </div>
             <div className="chart-toolbar">
               <div className="view-toggle">

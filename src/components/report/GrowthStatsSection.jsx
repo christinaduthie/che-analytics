@@ -105,7 +105,7 @@ function GrowthStatsSection({ growthStatistics = [], population = 0 }) {
             <tr>
               <th>Growth category</th>
               <th>Count</th>
-              <th>Updated</th>
+              <th>Updated Date</th>
             </tr>
           </thead>
           <tbody>

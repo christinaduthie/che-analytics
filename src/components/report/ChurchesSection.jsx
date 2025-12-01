@@ -121,7 +121,6 @@ function ChurchesSection({ churches = [] }) {
         "Established",
         "Updated",
         "New commitments",
-        "Left faith",
       ],
       rows: selectedChurches.map((c) => [
         c.churchName ?? "",
@@ -129,7 +128,6 @@ function ChurchesSection({ churches = [] }) {
         c.establishmentDate ?? "",
         c.updateDate ?? "",
         String(c.newCommitments ?? 0),
-        String(c.leftFaith ?? 0),
       ]),
       filename: "churches-report.pdf",
     });
@@ -137,7 +135,10 @@ function ChurchesSection({ churches = [] }) {
 
   return (
     <section className="mb-4">
-      <div className="report-toolbar d-flex flex-column flex-xl-row justify-content-end align-items-start gap-3 mb-3">
+      <div className="report-toolbar d-flex flex-column flex-xl-row justify-content-between align-items-start gap-3 mb-3">
+        <div>
+          <p className="text-muted text-uppercase small mb-1">Churches Report</p>
+        </div>
         <button
           type="button"
           className="btn btn-download-primary"
@@ -163,13 +164,12 @@ function ChurchesSection({ churches = [] }) {
                   onChange={(event) => toggleSelectAll(event.target.checked)}
                 />
               </th>
-              <th>Church</th>
+              <th>Church Name</th>
               <th>Location</th>
               <th>Est. date</th>
-              <th>Updated</th>
+              <th>Updated Date</th>
               <th>New commitments</th>
-              <th>Left faith</th>
-              <th>Files</th>
+              <th>Photos</th>
               <th>Remarks</th>
             </tr>
           </thead>
@@ -239,10 +239,7 @@ function ChurchesSection({ churches = [] }) {
         <div className="chart-container mt-4">
           <div className="d-flex flex-column flex-lg-row justify-content-between align-items-start gap-3 mb-3">
             <div>
-              <h4 className="section-heading mb-1">Engagement trends</h4>
-              <p className="text-muted mb-0">
-                Switch views to explore the same data over time or by congregation.
-              </p>
+              <h4 className="section-heading mb-1">Church Growth Chart</h4>
             </div>
             <div className="chart-toolbar">
               <div className="view-toggle">
