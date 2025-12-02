@@ -9,6 +9,7 @@ import { REPORT_TABS } from "./report/reportTabsConfig";
 function VillageReport({ village }) {
   const [activeTab, setActiveTab] = useState("churches");
   const info = village.cheVillageInformation;
+  const workerPhone = formatWorkerPhone(info.cheWorkerPhone);
   const workerShortName =
     typeof info.cheWorkerName === "string"
       ? info.cheWorkerName.split(" ")[0]
@@ -38,35 +39,6 @@ function VillageReport({ village }) {
 
   return (
     <section className="report-section mb-4">
-      <div className="report-hero app-card p-4 p-lg-5 mb-4">
-        <div className="row g-4 align-items-center">
-          <div className="col-lg-8">
-            <div className="hero-eyebrow text-uppercase small text-white-50 mb-2">
-              Village dossier · Population {info.population.toLocaleString()}
-            </div>
-            <h1 className="display-6 text-white mb-3">{info.cheVillageName}</h1>
-            <div className="d-flex flex-wrap gap-2">
-              <span className="hero-chip">{info.languageSpoken.length} languages</span>
-              <span className="hero-chip">{info.peopleGroups.length} people groups</span>
-            </div>
-          </div>
-          <div className="col-lg-4">
-            <div className="report-worker-card">
-              <p className="muted-label mb-1 text-white-50">Lead worker</p>
-              <h3 className="h5 text-white mb-1">{info.cheWorkerName}</h3>
-              <p className="text-white-50 mb-3">{info.cheWorkerOrganization}</p>
-              <div className="worker-meta">
-                <MetricBadge label="CHE Organization" value={info.cheOrganization} />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-   
-
-    
-
       <div className="report-tabs mb-3">
         {REPORT_TABS.map((tab) => (
           <button
@@ -89,8 +61,54 @@ function VillageReport({ village }) {
           <StoriesSection transformationStories={village.transformationStories} />
         )}
       </div>
+
+      <div className="report-hero app-card p-4 p-lg-5 mt-4">
+        <div className="row g-4 align-items-center">
+          <div className="col-lg-8">
+            
+            <h1 className="display-6 text-white mb-3">{info.cheVillageName}</h1>
+            <div className="d-flex flex-wrap gap-2">
+              <span className="hero-chip">{info.languageSpoken.length} languages</span>
+              <span className="hero-chip">{info.peopleGroups.length} people groups</span>
+            </div>
+          </div>
+          <div className="col-lg-4">
+            <div className="report-worker-card">
+              <p className="muted-label mb-1 text-white-50">CHE worker</p>
+              <h3 className="h5 text-white mb-3">{info.cheWorkerName}</h3>
+              <div className="worker-meta">
+                <MetricBadge label="CHE Organization" value={info.cheOrganization} />
+                {workerPhone && (
+                  <MetricBadge label="Phone" value={workerPhone} />
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
   );
+}
+
+function formatWorkerPhone(phone) {
+  if (!phone) {
+    return "";
+  }
+  const trimmed = phone.trim();
+  const hasPlus = trimmed.startsWith("+");
+  const digitsOnly = trimmed.replace(/\D/g, "");
+
+  if (hasPlus && digitsOnly.length > 10) {
+    const countryDigits = digitsOnly.slice(0, digitsOnly.length - 10);
+    const nationalDigits = digitsOnly.slice(-10);
+    return `+${countryDigits} ${nationalDigits}`;
+  }
+
+  if (hasPlus) {
+    return `+${digitsOnly}`;
+  }
+
+  return digitsOnly;
 }
 
 function InfoRow({ label, value }) {
