@@ -25,14 +25,14 @@ function VillageReport({ village }) {
     {
       id: "che-training",
       label: "CHE Trained",
-      dateLabel: "Date Trained",
+      dateLabel: "Date",
       date: info.cheWorkerTrainedDate,
       isComplete: Boolean(info.cheWorkerTrained),
     },
     {
       id: "mvc-status",
       label: "MVC Status",
-      dateLabel: "Date Adopted",
+      dateLabel: "Date",
       date: info.mvcAdoptedDate,
       isComplete: Boolean(info.mvcStatus),
     },
@@ -91,7 +91,7 @@ function VillageReport({ village }) {
             
             <h1 className="display-6 text-white mb-3">{info.cheVillageName}</h1>
             <div className="tele-doctor-meta mb-3">
-              <span className="tele-doctor-label">TeleDoctor Access:</span>
+              <span className="tele-doctor-label">TeleDoctor Access</span>
               <span className={`tele-doctor-status ${teleDoctorStatusClass}`}>
                 {teleDoctorStatusLabel}
               </span>
@@ -179,21 +179,24 @@ function MetricBadge({ label, value }) {
 
 function WorkerStatusItem({ label, dateLabel, date, isComplete }) {
   const iconLabel = `${label} ${isComplete ? "complete" : "pending"}`;
+  const iconSymbol = isComplete ? "✓" : "×";
   return (
     <div className="worker-status-item">
+      <div>
+        <p className="worker-status-label mb-1">{label}</p>
+        {isComplete && (
+          <p className="text-white fw-semibold mb-0">
+            {dateLabel}: {formatDisplayDate(date)}
+          </p>
+        )}
+      </div>
       <span
         className={`worker-status-icon ${isComplete ? "" : "inactive"}`}
         role="img"
         aria-label={iconLabel}
       >
-        {isComplete ? "✓" : "–"}
+        {iconSymbol}
       </span>
-      <div>
-        <p className="worker-status-label mb-1">{label}</p>
-        <p className="text-white fw-semibold mb-0">
-          {dateLabel}: {formatDisplayDate(date)}
-        </p>
-      </div>
     </div>
   );
 }

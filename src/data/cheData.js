@@ -35,7 +35,7 @@ export const cheData = {
                           "cheWorkerOrganization": "Hope Community Health Initiative",
                           "cheWorkerTrained": true,
                           "cheWorkerTrainedDate": "2024-07-01",
-                          "mvcStatus": true,
+                          "mvcStatus": false,
                           "mvcAdoptedDate": "2023-11-15",
                           "teleDoctorAccess": true,
                           "teleDoctorAccessDate": "2024-09-18",
