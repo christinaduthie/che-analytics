@@ -94,7 +94,7 @@ const movementMetricDescriptors = [
   },
   {
     key: "teleDoctorCenters",
-    label: "No. of TeleDoctor Facilitation Centers",
+    label: "TeleDoctor Facilitation Centers",
     valueAccessor: ({ coverage }) => coverage.teleDoctorCenters ?? 0,
     buildSeries: buildCoverageSeries((stats) => stats.teleDoctorCenters ?? 0),
   },
