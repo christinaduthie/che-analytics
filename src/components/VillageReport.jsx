@@ -6,14 +6,37 @@ import ProjectsSection from "./report/ProjectsSection";
 import StoriesSection from "./report/StoriesSection";
 import { REPORT_TABS } from "./report/reportTabsConfig";
 
+const WORKER_STATUS_DATE_FORMATTER = new Intl.DateTimeFormat("en-US", {
+  month: "short",
+  day: "numeric",
+  year: "numeric",
+});
+
 function VillageReport({ village }) {
   const [activeTab, setActiveTab] = useState("churches");
   const info = village.cheVillageInformation;
   const workerPhone = formatWorkerPhone(info.cheWorkerPhone);
-  const workerShortName =
-    typeof info.cheWorkerName === "string"
-      ? info.cheWorkerName.split(" ")[0]
-      : "Worker";
+  const teleDoctorStatusLabel = info.teleDoctorAccess
+    ? "Available"
+    : "Not available";
+  const teleDoctorStatusClass = info.teleDoctorAccess ? "available" : "unavailable";
+  const teleDoctorStatusDate = formatDisplayDate(info.teleDoctorAccessDate);
+  const workerStatusItems = [
+    {
+      id: "che-training",
+      label: "CHE Trained",
+      dateLabel: "Date Trained",
+      date: info.cheWorkerTrainedDate,
+      isComplete: Boolean(info.cheWorkerTrained),
+    },
+    {
+      id: "mvc-status",
+      label: "MVC Status",
+      dateLabel: "Date Adopted",
+      date: info.mvcAdoptedDate,
+      isComplete: Boolean(info.mvcStatus),
+    },
+  ];
 
   const infoTiles = [
     { label: "CHE Village", value: info.cheVillageName },
@@ -67,6 +90,13 @@ function VillageReport({ village }) {
           <div className="col-lg-8">
             
             <h1 className="display-6 text-white mb-3">{info.cheVillageName}</h1>
+            <div className="tele-doctor-meta mb-3">
+              <span className="tele-doctor-label">TeleDoctor Access:</span>
+              <span className={`tele-doctor-status ${teleDoctorStatusClass}`}>
+                {teleDoctorStatusLabel}
+              </span>
+              <span className="tele-doctor-date">Date: {teleDoctorStatusDate}</span>
+            </div>
             <div className="d-flex flex-wrap gap-2">
               <span className="hero-chip">{info.languageSpoken.length} languages</span>
               <span className="hero-chip">{info.peopleGroups.length} people groups</span>
@@ -77,10 +107,15 @@ function VillageReport({ village }) {
               <p className="muted-label mb-1 text-white-50">CHE worker</p>
               <h3 className="h5 text-white mb-3">{info.cheWorkerName}</h3>
               <div className="worker-meta">
-                <MetricBadge label="CHE Organization" value={info.cheOrganization} />
+                <MetricBadge label="CHE Worker Organization" value={info.cheWorkerOrganization} />
                 {workerPhone && (
                   <MetricBadge label="Phone" value={workerPhone} />
                 )}
+              </div>
+              <div className="worker-status-list mt-4">
+                {workerStatusItems.map((item) => (
+                  <WorkerStatusItem key={item.id} {...item} />
+                ))}
               </div>
             </div>
           </div>
@@ -140,6 +175,38 @@ function MetricBadge({ label, value }) {
       <p className="text-white fw-semibold mb-0">{value}</p>
     </div>
   );
+}
+
+function WorkerStatusItem({ label, dateLabel, date, isComplete }) {
+  const iconLabel = `${label} ${isComplete ? "complete" : "pending"}`;
+  return (
+    <div className="worker-status-item">
+      <span
+        className={`worker-status-icon ${isComplete ? "" : "inactive"}`}
+        role="img"
+        aria-label={iconLabel}
+      >
+        {isComplete ? "✓" : "–"}
+      </span>
+      <div>
+        <p className="worker-status-label mb-1">{label}</p>
+        <p className="text-white fw-semibold mb-0">
+          {dateLabel}: {formatDisplayDate(date)}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function formatDisplayDate(date) {
+  if (!date) {
+    return "Not recorded";
+  }
+  const parsed = new Date(date);
+  if (Number.isNaN(parsed)) {
+    return date;
+  }
+  return WORKER_STATUS_DATE_FORMATTER.format(parsed);
 }
 
 export default VillageReport;

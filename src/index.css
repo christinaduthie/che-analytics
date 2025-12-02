@@ -812,6 +812,47 @@
     border: 1px solid rgba(255, 255, 255, 0.2);
   }
 
+  .tele-doctor-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.9rem;
+  }
+
+  .tele-doctor-label {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.68rem;
+    color: rgba(255, 255, 255, 0.65);
+  }
+
+  .tele-doctor-status {
+    padding: 0.15rem 0.65rem;
+    border-radius: 999px;
+    font-weight: 600;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    text-transform: capitalize;
+  }
+
+  .tele-doctor-status.available {
+    background: rgba(34, 197, 94, 0.25);
+    color: #bbf7d0;
+    border-color: rgba(74, 222, 128, 0.7);
+  }
+
+  .tele-doctor-status.unavailable {
+    background: rgba(248, 113, 113, 0.2);
+    color: #fecaca;
+    border-color: rgba(248, 113, 113, 0.5);
+  }
+
+  .tele-doctor-date {
+    font-weight: 600;
+    color: #fff;
+  }
+
   .report-worker-card {
     background: rgba(15, 23, 42, 0.65);
     border: 1px solid rgba(255, 255, 255, 0.2);
@@ -831,6 +872,43 @@
     background: rgba(255, 255, 255, 0.08);
     border-radius: 0.75rem;
     padding: 0.35rem 0.75rem;
+  }
+
+  .worker-status-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .worker-status-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .worker-status-icon {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: #34d399;
+    background: rgba(15, 23, 42, 0.6);
+  }
+
+  .worker-status-icon.inactive {
+    border-color: rgba(255, 255, 255, 0.25);
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .worker-status-label {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
   }
 
   .report-info-card {

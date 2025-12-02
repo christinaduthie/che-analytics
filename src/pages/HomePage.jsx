@@ -93,6 +93,12 @@ const movementMetricDescriptors = [
     buildSeries: buildCoverageSeries((stats) => stats.mvcWorkers ?? 0),
   },
   {
+    key: "teleDoctorCenters",
+    label: "No. of TeleDoctor Facilitation Centers",
+    valueAccessor: ({ coverage }) => coverage.teleDoctorCenters ?? 0,
+    buildSeries: buildCoverageSeries((stats) => stats.teleDoctorCenters ?? 0),
+  },
+  {
     key: "cheChurches",
     label: "CHE Churches",
     valueAccessor: ({ impact }) => impact.movement.churches ?? 0,
@@ -1683,6 +1689,7 @@ function buildCoverageStats(villages = []) {
   let cheTrainedWorkers = 0;
   let mvcWorkers = 0;
   let masterTrainers = 0;
+  let teleDoctorCenters = 0;
 
   villages.forEach((village) => {
     const info = village.cheVillageInformation ?? {};
@@ -1708,6 +1715,7 @@ function buildCoverageStats(villages = []) {
     cheTrainedWorkers += info.cheTrainedWorkers ?? 0;
     mvcWorkers += info.mvcAdoptedWorkers ?? 0;
     masterTrainers += info.masterTrainers ?? 0;
+    teleDoctorCenters += info.teleDoctorFacilitationCenters ?? 0;
   });
 
   return {
@@ -1721,6 +1729,7 @@ function buildCoverageStats(villages = []) {
     mvcWorkers,
     workerPartnerOrganizations: workerPartners.size,
     masterTrainers,
+    teleDoctorCenters,
   };
 }
 
